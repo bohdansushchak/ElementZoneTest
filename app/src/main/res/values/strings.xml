@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ElementZoneTest</string>
+
+    <!--buttons -->
+    <string name="btn_log_in">LOG IN</string>
+
+    <!--hint strings-->
+    <string name="et_hint_email">E-mail</string>
+    <string name="et_hint_password">Hasło</string>
+
+    <!-- messages-->
+    <string name="err_email_is_empty">Wpisz coś</string>
+    <string name="err_password_is_empty">Haslo jest puste</string>
+    <string name="err_email_is_not_valid">Niepoprawny e-mail</string>
 </resources>
