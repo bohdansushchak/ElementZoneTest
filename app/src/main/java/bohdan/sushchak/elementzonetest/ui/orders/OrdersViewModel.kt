@@ -9,5 +9,4 @@ class OrdersViewModel(repository: Repository) : BaseViewModel(repository) {
     val orders by lazyDeffered {
         repository.getOrders()
     }
-
 }

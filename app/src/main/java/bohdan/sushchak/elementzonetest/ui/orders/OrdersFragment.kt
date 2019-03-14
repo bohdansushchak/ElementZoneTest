@@ -1,12 +1,12 @@
 package bohdan.sushchak.elementzonetest.ui.orders
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
 import bohdan.sushchak.elementzonetest.ui.base.BaseFragment
@@ -38,6 +38,7 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(OrdersViewModel::class.java)
 
+        fabCreateOrder.setOnClickListener { createOrder() }
         bindUI()
     }
 
@@ -62,5 +63,10 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         return this.map { order ->
             OrderItem(order)
         }
+    }
+
+    private fun createOrder() {
+        val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
+        navigationController.navigate(R.id.action_orders_to_createOrderFragment)
     }
 }

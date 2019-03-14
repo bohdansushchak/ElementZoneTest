@@ -7,5 +7,11 @@
     <fragment android:id="@+id/orders"
               android:name="bohdan.sushchak.elementzonetest.ui.orders.OrdersFragment"
               android:label="orders_fragment"
-              tools:layout="@layout/orders_fragment"/>
+              tools:layout="@layout/orders_fragment">
+        <action android:id="@+id/action_orders_to_createOrderFragment"
+                app:destination="@id/createOrderFragment"/>
+    </fragment>
+    <fragment android:id="@+id/createOrderFragment"
+              android:name="bohdan.sushchak.elementzonetest.ui.add_order.CreateOrderFragment"
+              android:label="create_order_fragment" tools:layout="@layout/create_order_fragment"/>
 </navigation>

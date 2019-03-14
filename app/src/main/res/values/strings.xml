@@ -3,13 +3,20 @@
 
     <!--buttons -->
     <string name="btn_log_in">LOG IN</string>
+    <string name="btn_next_step">NEXT STEP</string>
 
     <!--hint strings-->
     <string name="et_hint_email">E-mail</string>
     <string name="et_hint_password">Hasło</string>
+    <string name="et_hint_shop_title">Nazwa sklepu</string>
+    <string name="et_hint_location">Localizacja</string>
+    <string name="et_hint_date">Data zakupów</string>
 
     <!-- messages-->
     <string name="err_email_is_empty">Wpisz coś</string>
     <string name="err_password_is_empty">Haslo jest puste</string>
     <string name="err_email_is_not_valid">Niepoprawny e-mail</string>
+    <string name="err_shop_title_is_blank">Wpisz nazwę sklepu</string>
+    <string name="err_shop_location_is_blank">Wpisz lokalizację</string>
+    <string name="err_shop_date_is_blank">Wybierz datę</string>
 </resources>

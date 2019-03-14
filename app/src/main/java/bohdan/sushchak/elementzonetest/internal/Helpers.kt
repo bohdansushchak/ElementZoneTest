@@ -2,15 +2,19 @@ package bohdan.sushchak.elementzonetest.internal
 
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
+import java.util.*
 
-
-const val  API_DATE_FORMAT_PATTERN= "YYYY-mm-DD HH:MM:SS"
-const val DATE_FORMAT_PATTERN = "dd.MM.yyyy"
 
 @SuppressLint("SimpleDateFormat")
 fun normalizeDate(dateStr: String): String {
 
-    val parser = SimpleDateFormat(API_DATE_FORMAT_PATTERN)
-    val formatter = SimpleDateFormat(DATE_FORMAT_PATTERN)
+    val parser = SimpleDateFormat(Constants.API_DATE_FORMAT_PATTERN)
+    val formatter = SimpleDateFormat(Constants.DATE_FORMAT_PATTERN)
     return formatter.format(parser.parse(dateStr))
+}
+
+@SuppressLint("SimpleDateFormat")
+fun formatDate(date: Date, pattern: String): String {
+    val sdf = SimpleDateFormat(pattern)
+    return sdf.format(date)
 }
