@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/et_hint_email"
-                    android:backgroundTint="@color/colorAccent"
+                    style="@style/EditTextStyle"
                     android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/et_hint_password"
-                    android:backgroundTint="@color/colorAccent"
+                    style="@style/EditTextStyle"
                     android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,10 +1,8 @@
 package bohdan.sushchak.elementzonetest.ui.add_order
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
@@ -47,13 +45,13 @@ class CreateOrderFragment : BaseFragment() {
             etDateLayout.error = if (date.isBlank()) getString(R.string.err_shop_date_is_blank) else null
             return false
         }
-
         return true
     }
 
     private fun nextStep() {
         if (!isFieldsNotEmpty()) return
 
+        navigateTo(R.id.action_createOrderFragment_to_addItemListToOrderFragment)
     }
 
     private fun pickDate() {

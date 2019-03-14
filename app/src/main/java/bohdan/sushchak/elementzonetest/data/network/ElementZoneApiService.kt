@@ -1,5 +1,7 @@
 package bohdan.sushchak.elementzonetest.data.network
 
+import bohdan.sushchak.elementzonetest.data.network.model.OrderModel
+import bohdan.sushchak.elementzonetest.data.network.model.Product
 import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
 import bohdan.sushchak.elementzonetest.data.network.responces.MyResponse
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
@@ -31,6 +33,15 @@ interface ElementZoneApiService {
     @POST("/orders")
     fun getOrdersAsync(@Field("api_token") apiToken: String
     ):Deferred<Response<MyResponse<List<Order>>>>
+
+    @FormUrlEncoded
+    @POST("/addOrder")
+    fun addOrderAsync(@Field("api_token") apiToken: String,
+                      @Field("date") date: String,
+                      @Field("location") location: String,
+                      @Field("price") price: Float,
+                      @Field("items") items: List<Product>
+    ):Deferred<Response<MyResponse<String>>>
 
     companion object {
         operator fun invoke(

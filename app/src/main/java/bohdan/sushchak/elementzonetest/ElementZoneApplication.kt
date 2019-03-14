@@ -4,6 +4,7 @@ import android.app.Application
 import bohdan.sushchak.elementzonetest.data.network.*
 import bohdan.sushchak.elementzonetest.data.repository.Repository
 import bohdan.sushchak.elementzonetest.data.repository.RepositoryImpl
+import bohdan.sushchak.elementzonetest.ui.item_list.AddItemListToOrderViewModelFactory
 import bohdan.sushchak.elementzonetest.ui.login.LoginViewModelFactory
 import bohdan.sushchak.elementzonetest.ui.orders.OrdersViewModelFactory
 import org.kodein.di.Kodein
@@ -24,5 +25,6 @@ class ElementZoneApplication : Application(), KodeinAware {
 
         bind() from provider { LoginViewModelFactory(instance())}
         bind() from provider { OrdersViewModelFactory(instance()) }
+        bind() from provider { AddItemListToOrderViewModelFactory(instance()) }
     }
 }

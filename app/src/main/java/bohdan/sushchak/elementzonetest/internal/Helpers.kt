@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 @SuppressLint("SimpleDateFormat")
 fun normalizeDate(dateStr: String): String {
 
