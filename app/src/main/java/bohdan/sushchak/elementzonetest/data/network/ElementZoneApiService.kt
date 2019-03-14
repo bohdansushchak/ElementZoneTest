@@ -1,6 +1,5 @@
 package bohdan.sushchak.elementzonetest.data.network
 
-import bohdan.sushchak.elementzonetest.data.network.model.OrderModel
 import bohdan.sushchak.elementzonetest.data.network.model.Product
 import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
 import bohdan.sushchak.elementzonetest.data.network.responces.MyResponse
@@ -15,6 +14,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
+import retrofit2.http.Path
 
 interface ElementZoneApiService {
 
@@ -42,6 +42,18 @@ interface ElementZoneApiService {
                       @Field("price") price: Float,
                       @Field("items") items: List<Product>
     ):Deferred<Response<MyResponse<String>>>
+
+    @FormUrlEncoded
+    @POST("/order/{link}")
+    fun getOrderByLinkAsync(@Field("api_token") apiToken: String,
+                       @Path("link") link: String
+    ):Deferred<Response<MyResponse<Any>>>
+
+    @FormUrlEncoded
+    @POST("/generate")
+    fun generateLinkToOrferAsync(@Field("api_token") apiToken: String,
+                                 @Field("id") id: Long
+    ):Deferred<Response<MyResponse<Any>>>
 
     companion object {
         operator fun invoke(

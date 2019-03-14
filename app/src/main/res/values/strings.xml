@@ -5,6 +5,7 @@
     <string name="btn_log_in">LOG IN</string>
     <string name="btn_next_step">NEXT STEP</string>
     <string name="btn_done">Done</string>
+    <string name="btn_share">ZAPROŚ</string>
 
     <!--hint strings-->
     <string name="et_hint_email">E-mail</string>

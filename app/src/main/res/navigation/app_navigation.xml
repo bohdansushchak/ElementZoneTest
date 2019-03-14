@@ -10,6 +10,7 @@
               tools:layout="@layout/orders_fragment">
         <action android:id="@+id/action_orders_to_createOrderFragment"
                 app:destination="@id/createOrderFragment"/>
+        <action android:id="@+id/action_orders_to_aboutOrderFragment" app:destination="@id/aboutOrderFragment"/>
     </fragment>
 
     <fragment android:id="@+id/createOrderFragment"
@@ -23,4 +24,7 @@
     <fragment android:id="@+id/addItemListToOrderFragment"
               android:name="bohdan.sushchak.elementzonetest.ui.item_list.AddItemListToOrderFragment"
               android:label="add_item_list_to_order_fragment" tools:layout="@layout/add_item_list_to_order_fragment"/>
+    <fragment android:id="@+id/aboutOrderFragment"
+              android:name="bohdan.sushchak.elementzonetest.ui.about_order.AboutOrderFragment"
+              android:label="about_order_fragment" tools:layout="@layout/about_order_fragment"/>
 </navigation>

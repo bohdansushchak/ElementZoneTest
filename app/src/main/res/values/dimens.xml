@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bottomButtonMarginEnd">56dp</dimen>
+    <dimen name="bottomButtonMarginStart">56dp</dimen>
+    <dimen name="bottomButtonMarginBottom">36dp</dimen>
+</resources>
