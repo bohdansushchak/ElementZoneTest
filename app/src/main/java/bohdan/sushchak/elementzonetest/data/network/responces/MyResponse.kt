@@ -2,10 +2,10 @@ package bohdan.sushchak.elementzonetest.data.network.responces
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginResponse(
+data class MyResponse<out T: Any>(
 
     @SerializedName("data")
-    val data: LoginData?,
+    val data: T?,
 
     @SerializedName("error")
     val error: ApiError?

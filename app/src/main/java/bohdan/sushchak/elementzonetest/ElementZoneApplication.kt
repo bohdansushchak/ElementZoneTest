@@ -5,6 +5,7 @@ import bohdan.sushchak.elementzonetest.data.network.*
 import bohdan.sushchak.elementzonetest.data.repository.Repository
 import bohdan.sushchak.elementzonetest.data.repository.RepositoryImpl
 import bohdan.sushchak.elementzonetest.ui.login.LoginViewModelFactory
+import bohdan.sushchak.elementzonetest.ui.orders.OrdersViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -14,14 +15,14 @@ class ElementZoneApplication : Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidXModule(this@ElementZoneApplication))
 
-
         bind<ServerExceptionInterceptor>() with singleton { ServerExceptionInterceptorImpl() }
 
         bind() from singleton { ElementZoneApiService(instance()) }
 
-        bind<LoginApiService>() with singleton {  LoginApiServiceImpl(instance())}
+        bind<RESTService>() with singleton {  RESTServiceImpl(instance())}
         bind<Repository>() with singleton { RepositoryImpl(instance()) }
 
         bind() from provider { LoginViewModelFactory(instance())}
+        bind() from provider { OrdersViewModelFactory(instance()) }
     }
 }

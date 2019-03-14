@@ -3,6 +3,7 @@ package bohdan.sushchak.elementzonetest.ui.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import bohdan.sushchak.elementzonetest.data.network.responces.ApiError
+import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
 import bohdan.sushchak.elementzonetest.data.repository.Repository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

@@ -1,6 +1,8 @@
 package bohdan.sushchak.elementzonetest.data.network
 
-import bohdan.sushchak.elementzonetest.data.network.responces.LoginResponse
+import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
+import bohdan.sushchak.elementzonetest.data.network.responces.MyResponse
+import bohdan.sushchak.elementzonetest.data.network.responces.Order
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
@@ -11,8 +13,6 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
-import java.util.*
-
 
 interface ElementZoneApiService {
 
@@ -20,7 +20,17 @@ interface ElementZoneApiService {
     @POST("/login")
     fun logInAsync(@Field("email") email: String,
                    @Field("password") password: String
-    ):Deferred<Response<LoginResponse>>
+    ):Deferred<Response<MyResponse<LoginData>>>
+
+    @FormUrlEncoded
+    @POST("/refresh")
+    fun refreshTokenAsync(@Field("api_token") apiToken: String
+    ):Deferred<Response<MyResponse<String>>>
+
+    @FormUrlEncoded
+    @POST("/orders")
+    fun getOrdersAsync(@Field("api_token") apiToken: String
+    ):Deferred<Response<MyResponse<List<Order>>>>
 
     companion object {
         operator fun invoke(
