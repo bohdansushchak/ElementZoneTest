@@ -8,23 +8,34 @@
               android:name="bohdan.sushchak.elementzonetest.ui.orders.OrdersFragment"
               android:label="orders_fragment"
               tools:layout="@layout/orders_fragment">
+
         <action android:id="@+id/action_orders_to_createOrderFragment"
                 app:destination="@id/createOrderFragment"/>
-        <action android:id="@+id/action_orders_to_aboutOrderFragment" app:destination="@id/aboutOrderFragment"/>
+
+        <action android:id="@+id/action_orders_to_aboutOrderFragment"
+                app:destination="@id/aboutOrderFragment"/>
     </fragment>
 
     <fragment android:id="@+id/createOrderFragment"
               android:name="bohdan.sushchak.elementzonetest.ui.add_order.CreateOrderFragment"
               android:label="create_order_fragment"
               tools:layout="@layout/create_order_fragment">
+
         <action android:id="@+id/action_createOrderFragment_to_addItemListToOrderFragment"
                 app:destination="@id/addItemListToOrderFragment"/>
     </fragment>
 
     <fragment android:id="@+id/addItemListToOrderFragment"
               android:name="bohdan.sushchak.elementzonetest.ui.item_list.AddItemListToOrderFragment"
-              android:label="add_item_list_to_order_fragment" tools:layout="@layout/add_item_list_to_order_fragment"/>
+              android:label="add_item_list_to_order_fragment"
+              tools:layout="@layout/add_item_list_to_order_fragment">
+        <argument android:name="shopTitle" app:argType="string"/>
+        <argument android:name="location" app:argType="string"/>
+        <argument android:name="date" app:argType="string"/>
+    </fragment>
+
     <fragment android:id="@+id/aboutOrderFragment"
               android:name="bohdan.sushchak.elementzonetest.ui.about_order.AboutOrderFragment"
-              android:label="about_order_fragment" tools:layout="@layout/about_order_fragment"/>
+              android:label="about_order_fragment"
+              tools:layout="@layout/about_order_fragment"/>
 </navigation>

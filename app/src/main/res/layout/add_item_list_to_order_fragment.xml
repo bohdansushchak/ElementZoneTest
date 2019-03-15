@@ -90,15 +90,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnNextStep"/>
+            app:layout_constraintBottom_toTopOf="@+id/btnSaveOrder"/>
 
     <Button
             android:text="@string/btn_done"
             style="@style/ButtonStyle"
-            android:id="@+id/btnNextStep"
+            android:id="@+id/btnSaveOrder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:layout_marginBottom="@dimen/bottomButtonMarginBottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

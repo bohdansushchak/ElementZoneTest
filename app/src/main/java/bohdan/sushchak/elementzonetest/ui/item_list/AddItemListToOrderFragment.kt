@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.data.network.model.Product
+import bohdan.sushchak.elementzonetest.internal.LostArgumetsException
 import bohdan.sushchak.elementzonetest.ui.base.BaseFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -31,10 +32,21 @@ class AddItemListToOrderFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        val safeArgs = arguments?.let { AddItemListToOrderFragmentArgs.fromBundle(it) }
+        val shopTitle = safeArgs?.shopTitle ?: throw LostArgumetsException()
+        val location = safeArgs.location
+        val date = safeArgs.date
+
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(AddItemListToOrderViewModel::class.java)
 
+        btnSaveOrder.setOnClickListener {
+            //saveOrder(shopTitle, location, date)
+            viewModel.saveOrder(shopTitle, location, date)
+        }
         fabAddProduct.setOnClickListener { addProduct() }
+
         bindUI()
     }
 
@@ -72,6 +84,11 @@ class AddItemListToOrderFragment : BaseFragment() {
 
         viewModel.addProduct(titleProduct)
         etProductTitle.text = null
+    }
+
+    private fun saveOrder(shopTitle: String, location: String, date: String){
+
+        viewModel.saveOrder(shopTitle, location, date)
     }
 
     private fun List<Product>.toProductItem(onClick: ((position: Int) -> Unit)?): List<ProductItem> {

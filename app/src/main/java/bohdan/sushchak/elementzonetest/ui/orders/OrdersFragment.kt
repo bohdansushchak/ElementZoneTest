@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
@@ -38,19 +37,28 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(OrdersViewModel::class.java)
 
-        fabCreateOrder.setOnClickListener { createOrder() }
+        fabCreateOrder.setOnClickListener { navigateTo(R.id.action_orders_to_createOrderFragment) }
         bindUI()
     }
 
     private fun bindUI() = launch {
         val list = viewModel.orders.await()
 
-        initRecyclerView(list.toOrderItems())
+        initRecyclerView(list)
     }
 
-    private fun initRecyclerView(items: List<OrderItem>) {
+    private fun initRecyclerView(orders: List<Order>) {
+
+        val items = orders.toOrderItems()
+
         val groupAdapter = GroupAdapter<ViewHolder>().apply {
             addAll(items)
+        }
+
+        groupAdapter.setOnItemClickListener { item, _ ->
+            val index = items.indexOf(item)
+            val selectedOrder = orders[index]
+            startAboutFragment(selectedOrder)
         }
 
         rlOrders.apply {
@@ -65,8 +73,8 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         }
     }
 
-    private fun createOrder() {
-        val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
-        navigationController.navigate(R.id.action_orders_to_createOrderFragment)
+    private fun startAboutFragment(order: Order) {
+
+        navigateTo(R.id.action_orders_to_aboutOrderFragment)
     }
 }

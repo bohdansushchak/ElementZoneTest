@@ -17,7 +17,7 @@ class ElementZoneApplication : Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidXModule(this@ElementZoneApplication))
 
-        bind<ServerExceptionInterceptor>() with singleton { ServerExceptionInterceptorImpl() }
+        bind<TokenInterceptor>() with singleton { TokenInterceptorImpl() }
 
         bind() from singleton { ElementZoneApiService(instance()) }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.internal.Constants
 import bohdan.sushchak.elementzonetest.internal.formatDate
@@ -29,11 +30,11 @@ class CreateOrderFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this)
             .get(CreateOrderViewModel::class.java)
 
-        btnNextStep.setOnClickListener { nextStep() }
+        btnNextStep.setOnClickListener { nextStep(it) }
         etDate.setOnClickListener { pickDate() }
     }
 
-    private fun isFieldsNotEmpty(): Boolean {
+    private fun nextStep(view: View) {
         val shopTitle = etShopTitle.text.toString()
         val shopLocation = etShopLocation.text.toString()
         val date = etDate.text.toString()
@@ -43,15 +44,12 @@ class CreateOrderFragment : BaseFragment() {
             etShopLocationLayout.error =
                 if (shopLocation.isBlank()) getString(R.string.err_shop_location_is_blank) else null
             etDateLayout.error = if (date.isBlank()) getString(R.string.err_shop_date_is_blank) else null
-            return false
+            return
         }
-        return true
-    }
 
-    private fun nextStep() {
-        if (!isFieldsNotEmpty()) return
-
-        navigateTo(R.id.action_createOrderFragment_to_addItemListToOrderFragment)
+        val actionAddProducts = CreateOrderFragmentDirections
+            .actionCreateOrderFragmentToAddItemListToOrderFragment(shopTitle, shopLocation, viewModel.apiDate)
+        Navigation.findNavController(view).navigate(actionAddProducts)
     }
 
     private fun pickDate() {
@@ -60,17 +58,19 @@ class CreateOrderFragment : BaseFragment() {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val dpd = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
+        activity?.let {
+            val dpd = DatePickerDialog(it, DatePickerDialog.OnDateSetListener { _, year_, monthOfYear, dayOfMonth ->
 
-            calendar.clear()
-            calendar.set(Calendar.YEAR, year_)
-            calendar.set(Calendar.MONTH, monthOfYear)
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                calendar.clear()
+                calendar.set(Calendar.YEAR, year_)
+                calendar.set(Calendar.MONTH, monthOfYear)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            viewModel.apiDate = formatDate(calendar.time, Constants.API_DATE_FORMAT_PATTERN)
-            etDate.setText(formatDate(calendar.time, Constants.DATE_FORMAT_PATTERN))
+                viewModel.apiDate = formatDate(calendar.time, Constants.API_DATE_FORMAT_PATTERN)
+                etDate.setText(formatDate(calendar.time, Constants.DATE_FORMAT_PATTERN))
 
-        }, year, month, day)
-        dpd.show()
+            }, year, month, day)
+            dpd.show()
+        }
     }
 }

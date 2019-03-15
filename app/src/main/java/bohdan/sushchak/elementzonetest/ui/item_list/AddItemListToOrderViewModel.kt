@@ -1,5 +1,6 @@
 package bohdan.sushchak.elementzonetest.ui.item_list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import bohdan.sushchak.elementzonetest.data.network.model.Product
@@ -37,7 +38,8 @@ class AddItemListToOrderViewModel(repository: Repository) : BaseViewModel(reposi
         }
     }
 
-    fun saveOrder() {
+    fun saveOrder(shopTitle: String, location: String, date: String) {
 
+        Log.d("ARG", "$shopTitle, $location, $date" )
     }
 }

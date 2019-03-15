@@ -57,7 +57,7 @@ interface ElementZoneApiService {
 
     companion object {
         operator fun invoke(
-            serverExceptionInterceptor: ServerExceptionInterceptor
+            serverExceptionInterceptor: TokenInterceptor
         ): ElementZoneApiService {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
