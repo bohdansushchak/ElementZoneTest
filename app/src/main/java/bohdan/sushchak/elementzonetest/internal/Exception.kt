@@ -5,4 +5,6 @@ import java.lang.Exception
 
 class NoConnectivityException: IOException()
 
-class LostArgumetsException: Exception()
+class LostArgumentsException: Exception()
+
+class TokenNullException: Exception()

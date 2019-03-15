@@ -12,4 +12,6 @@ interface Repository {
     suspend fun logIn(email: String, password: String): LoginData?
 
     suspend fun getOrders(): List<Order>
+
+    fun getIsLoggedInLive(): LiveData<Boolean>
 }

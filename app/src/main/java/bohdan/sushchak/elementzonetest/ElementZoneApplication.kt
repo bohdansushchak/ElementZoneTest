@@ -2,6 +2,8 @@ package bohdan.sushchak.elementzonetest
 
 import android.app.Application
 import bohdan.sushchak.elementzonetest.data.network.*
+import bohdan.sushchak.elementzonetest.data.provider.TokenProvider
+import bohdan.sushchak.elementzonetest.data.provider.TokenProviderImpl
 import bohdan.sushchak.elementzonetest.data.repository.Repository
 import bohdan.sushchak.elementzonetest.data.repository.RepositoryImpl
 import bohdan.sushchak.elementzonetest.ui.about_order.AboutOrderViewModelFactory
@@ -17,12 +19,12 @@ class ElementZoneApplication : Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidXModule(this@ElementZoneApplication))
 
-        bind<TokenInterceptor>() with singleton { TokenInterceptorImpl() }
+        bind() from singleton { ElementZoneApiService() }
 
-        bind() from singleton { ElementZoneApiService(instance()) }
-
-        bind<RESTService>() with singleton {  RESTServiceImpl(instance())}
+        bind<RESTService>() with singleton {  RESTServiceImpl(instance(), instance())}
         bind<Repository>() with singleton { RepositoryImpl(instance()) }
+
+        bind<TokenProvider>() with singleton { TokenProviderImpl(instance()) }
 
         bind() from provider { LoginViewModelFactory(instance())}
         bind() from provider { OrdersViewModelFactory(instance()) }

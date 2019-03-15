@@ -27,7 +27,7 @@ interface ElementZoneApiService {
     @FormUrlEncoded
     @POST("/refresh")
     fun refreshTokenAsync(@Field("api_token") apiToken: String
-    ):Deferred<Response<MyResponse<String>>>
+    ):Deferred<Response<MyResponse<Boolean>>>
 
     @FormUrlEncoded
     @POST("/orders")
@@ -56,15 +56,12 @@ interface ElementZoneApiService {
     ):Deferred<Response<MyResponse<Any>>>
 
     companion object {
-        operator fun invoke(
-            serverExceptionInterceptor: TokenInterceptor
-        ): ElementZoneApiService {
+        operator fun invoke(): ElementZoneApiService {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
 
             val httpClient = OkHttpClient.Builder()
             httpClient.addInterceptor(logging)
-            httpClient.addInterceptor(serverExceptionInterceptor)
 
             return Retrofit.Builder()
                 .client(httpClient.build())

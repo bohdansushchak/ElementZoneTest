@@ -38,4 +38,8 @@ class RepositoryImpl(private var restService: RESTService) : Repository {
             return@withContext orders?.data!! //TODO fix this
         }
     }
+
+    override fun getIsLoggedInLive(): LiveData<Boolean> {
+        return restService.getIsLoggedInLive()
+    }
 }

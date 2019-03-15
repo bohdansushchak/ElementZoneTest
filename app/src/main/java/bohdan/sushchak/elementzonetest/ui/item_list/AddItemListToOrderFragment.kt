@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.data.network.model.Product
-import bohdan.sushchak.elementzonetest.internal.LostArgumetsException
+import bohdan.sushchak.elementzonetest.internal.LostArgumentsException
 import bohdan.sushchak.elementzonetest.ui.base.BaseFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -34,7 +34,7 @@ class AddItemListToOrderFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         val safeArgs = arguments?.let { AddItemListToOrderFragmentArgs.fromBundle(it) }
-        val shopTitle = safeArgs?.shopTitle ?: throw LostArgumetsException()
+        val shopTitle = safeArgs?.shopTitle ?: throw LostArgumentsException()
         val location = safeArgs.location
         val date = safeArgs.date
 

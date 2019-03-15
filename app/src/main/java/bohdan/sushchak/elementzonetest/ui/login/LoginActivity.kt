@@ -29,8 +29,9 @@ class LoginActivity : BaseActivity(){
     }
 
     private fun bindUI() = launch{
-        viewModel.apiKey.observe(this@LoginActivity, Observer { data ->
-            if(data != null) {
+
+        viewModel.isLoginned.observe(this@LoginActivity, Observer { isLoggedIn ->
+            if(isLoggedIn) {
                 startMainActivity()
             }
         })

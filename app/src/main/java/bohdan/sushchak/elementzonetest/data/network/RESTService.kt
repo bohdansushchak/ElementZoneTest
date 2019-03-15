@@ -10,8 +10,6 @@ interface RESTService {
 
     val apiException: LiveData<ApiError>
 
-    val apiToken: LiveData<String>
-
     suspend fun logIn(
         email: String,
         password: String
@@ -21,4 +19,6 @@ interface RESTService {
         offSet: Int,
         limit: Int
     ): MyResponse<List<Order>>?
+
+    fun getIsLoggedInLive(): LiveData<Boolean>
 }
