@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">ElementZoneTest</string>
 
+
+    <!-- toolbar titles -->
+    <string name="toolbar_title_shop_data">Dane sklepu</string>
+    <string name="toolbar_title_order_list">Lista zakupów</string>
+    <string name="toolbar_title_order_data">Dane zamówienia</string>
+
     <!--buttons -->
     <string name="btn_log_in">LOG IN</string>
     <string name="btn_next_step">NEXT STEP</string>

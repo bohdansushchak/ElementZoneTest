@@ -14,11 +14,12 @@
 
         <action android:id="@+id/action_orders_to_aboutOrderFragment"
                 app:destination="@id/aboutOrderFragment"/>
+        <argument android:name="isHideActionBar" app:argType="boolean" android:defaultValue="true"/>
     </fragment>
 
     <fragment android:id="@+id/createOrderFragment"
               android:name="bohdan.sushchak.elementzonetest.ui.add_order.CreateOrderFragment"
-              android:label="create_order_fragment"
+              android:label="@string/toolbar_title_shop_data"
               tools:layout="@layout/create_order_fragment">
 
         <action android:id="@+id/action_createOrderFragment_to_addItemListToOrderFragment"
@@ -27,7 +28,7 @@
 
     <fragment android:id="@+id/addItemListToOrderFragment"
               android:name="bohdan.sushchak.elementzonetest.ui.item_list.AddItemListToOrderFragment"
-              android:label="add_item_list_to_order_fragment"
+              android:label="@string/toolbar_title_order_list"
               tools:layout="@layout/add_item_list_to_order_fragment">
         <argument android:name="shopTitle" app:argType="string"/>
         <argument android:name="location" app:argType="string"/>
@@ -36,6 +37,6 @@
 
     <fragment android:id="@+id/aboutOrderFragment"
               android:name="bohdan.sushchak.elementzonetest.ui.about_order.AboutOrderFragment"
-              android:label="about_order_fragment"
+              android:label="@string/toolbar_title_order_data"
               tools:layout="@layout/about_order_fragment"/>
 </navigation>
