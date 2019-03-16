@@ -33,7 +33,7 @@ class RESTServiceImpl(
             if (response.isSuccessful) {
 
                 val loginData = response.body()?.data!!
-                //tokenProvider.saveToken(loginData)
+                tokenProvider.saveToken(loginData)
 
                 return response.body()
             }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 
 class RepositoryImpl(private var restService: RESTService) : Repository {
 
-    val _apiException = MutableLiveData<ApiError>()
+    private val _apiException = MutableLiveData<ApiError>()
     override val apiException: LiveData<ApiError>
         get() = _apiException
 
@@ -24,10 +24,7 @@ class RepositoryImpl(private var restService: RESTService) : Repository {
 
     override suspend fun logIn(email: String, password: String): LoginData? {
         return withContext(Dispatchers.IO) {
-
-            val loginResponse = restService.logIn(email, password)?.data
-
-            return@withContext loginResponse
+            return@withContext restService.logIn(email, password)?.data
         }
     }
 
@@ -35,7 +32,7 @@ class RepositoryImpl(private var restService: RESTService) : Repository {
         return withContext(Dispatchers.IO) {
             val orders = restService.getOrders(1,1)
 
-            return@withContext orders?.data!! //TODO fix this
+            return@withContext orders?.data?: arrayListOf()//TODO fix this
         }
     }
 }

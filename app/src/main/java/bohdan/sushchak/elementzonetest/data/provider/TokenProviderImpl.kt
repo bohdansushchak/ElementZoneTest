@@ -34,7 +34,7 @@ class TokenProviderImpl(
 
     private lateinit var apiToken: String
 
-    private lateinit var apiTokenExpires: ApiTokenExpires
+    private var apiTokenExpires: ApiTokenExpires? = null
 
     override val apiTokenAsync: Deferred<String>
         get() = GlobalScope.async {
@@ -52,7 +52,7 @@ class TokenProviderImpl(
             val apiTokenExpiresJson = preferences.getString(API_TOKEN_EXPIRES, null)
 
             apiTokenExpiresJson?.let {
-                apiTokenExpires = Gson().fromJson(it, ApiTokenExpires::class.java)
+                Gson().fromJson(it, ApiTokenExpires::class.java)
             }
         }
     }
@@ -80,13 +80,16 @@ class TokenProviderImpl(
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun isNeedUpdateToken(tokenExpires: ApiTokenExpires): Boolean {
+    private fun isNeedUpdateToken(tokenExpires: ApiTokenExpires?): Boolean {
+        if (tokenExpires?.date.isNullOrEmpty())
+            return true
+
         val apiDateSdf = SimpleDateFormat(Constants.API_DATE_FORMAT_PATTERN)
-        val dateTokenExpires = apiDateSdf.parse(tokenExpires.date)
+        val dateTokenExpires = apiDateSdf.parse(tokenExpires?.date)
 
         val currentDate = Date()
 //TODO fix: add comparing with time zone
-        return dateTokenExpires.before(currentDate)
+        return currentDate.before(dateTokenExpires)
     }
 
     override suspend fun clearToken() {

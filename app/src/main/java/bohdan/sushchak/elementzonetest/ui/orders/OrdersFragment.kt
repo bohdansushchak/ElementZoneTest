@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
@@ -42,9 +43,9 @@ class OrdersFragment : BaseFragment(), KodeinAware {
     }
 
     private fun bindUI() = launch {
-        val list = viewModel.orders.await()
-
-        initRecyclerView(list)
+        viewModel.ordersLive.observe(this@OrdersFragment, Observer { orders ->
+            initRecyclerView(orders)
+        })
     }
 
     private fun initRecyclerView(orders: List<Order>) {
