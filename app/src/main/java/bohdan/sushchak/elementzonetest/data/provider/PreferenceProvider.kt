@@ -10,6 +10,4 @@ abstract class PreferenceProvider(context: Context) {
 
     protected val preferences: SharedPreferences
         get() = PreferenceManager.getDefaultSharedPreferences(appContext)
-
-
 }

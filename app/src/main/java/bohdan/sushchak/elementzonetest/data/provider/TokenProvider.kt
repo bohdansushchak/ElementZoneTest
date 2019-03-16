@@ -1,18 +1,21 @@
 package bohdan.sushchak.elementzonetest.data.provider
 
-import androidx.lifecycle.LiveData
 import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
 import kotlinx.coroutines.Deferred
 
 interface TokenProvider {
 
-    val apiToken: LiveData<String>
+    //var apiToken: String
 
-    val isLoggedIn: LiveData<Boolean>
+    val hasToken: Boolean
 
-    val hasSavedToken: Deferred<Boolean>
+    val needUpdate: Boolean
 
-    suspend fun refreshToken()
+    val apiTokenAsync: Deferred<String>
+
+    suspend fun refreshToken(): Boolean
 
     suspend fun saveToken(loginData: LoginData)
+
+    suspend fun clearToken()
 }

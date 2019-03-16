@@ -26,7 +26,7 @@ class ElementZoneApplication : Application(), KodeinAware {
 
         bind<TokenProvider>() with singleton { TokenProviderImpl(instance()) }
 
-        bind() from provider { LoginViewModelFactory(instance())}
+        bind() from provider { LoginViewModelFactory(instance(), instance())}
         bind() from provider { OrdersViewModelFactory(instance()) }
         bind() from provider { AddItemListToOrderViewModelFactory(instance()) }
         bind() from provider { AboutOrderViewModelFactory(instance()) }

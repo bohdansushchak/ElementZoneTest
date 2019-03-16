@@ -19,6 +19,4 @@ interface RESTService {
         offSet: Int,
         limit: Int
     ): MyResponse<List<Order>>?
-
-    fun getIsLoggedInLive(): LiveData<Boolean>
 }

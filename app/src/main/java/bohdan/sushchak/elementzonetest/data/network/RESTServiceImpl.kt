@@ -33,7 +33,7 @@ class RESTServiceImpl(
             if (response.isSuccessful) {
 
                 val loginData = response.body()?.data!!
-                tokenProvider.saveToken(loginData)
+                //tokenProvider.saveToken(loginData)
 
                 return response.body()
             }
@@ -48,10 +48,8 @@ class RESTServiceImpl(
 
     override suspend fun getOrders(offSet: Int, limit: Int): MyResponse<List<Order>>? {
 
-        tokenProvider.refreshToken()
-
-        val apiToken = tokenProvider.apiToken.value
-        val responseOrderListDeff = elementZoneApiService.getOrdersAsync(apiToken!!)
+        val apiToken = tokenProvider.apiTokenAsync.await()
+        val responseOrderListDeff = elementZoneApiService.getOrdersAsync(apiToken)
         val response = responseOrderListDeff.await()
 
         try {
@@ -77,10 +75,6 @@ class RESTServiceImpl(
                 Log.e("ERR", e.message, e)
             }
         }
-    }
-
-    override fun getIsLoggedInLive(): LiveData<Boolean> {
-        return tokenProvider.isLoggedIn
     }
 }
 

@@ -9,11 +9,10 @@ import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.ui.MainActivity
 import bohdan.sushchak.elementzonetest.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.coroutines.*
-
+import kotlinx.coroutines.launch
 import org.kodein.di.generic.instance
 
-class LoginActivity : BaseActivity(){
+class LoginActivity : BaseActivity() {
 
     private val viewModelFactory: LoginViewModelFactory by instance()
     private lateinit var viewModel: LoginViewModel
@@ -28,10 +27,12 @@ class LoginActivity : BaseActivity(){
         bindUI()
     }
 
-    private fun bindUI() = launch{
+    private fun bindUI() = launch {
+        if (viewModel.hasSavedToken.await())
+            startMainActivity()
 
-        viewModel.isLoginned.observe(this@LoginActivity, Observer { isLoggedIn ->
-            if(isLoggedIn) {
+        viewModel.isLoggedIn.observe(this@LoginActivity, Observer { isLoggedIn ->
+            if (isLoggedIn) {
                 startMainActivity()
             }
         })
@@ -45,15 +46,15 @@ class LoginActivity : BaseActivity(){
         val email = etEmail.text.toString()
         val password = etPassword.text.toString()
 
-        if(email.isBlank() || password.isBlank()){
+        if (email.isBlank() || password.isBlank()) {
             var emailErr: String? = null
 
-            if(email.isBlank())
+            if (email.isBlank())
                 emailErr = getString(R.string.err_email_is_empty)
-            if(!isEmailValid(email))
+            if (!isEmailValid(email))
                 emailErr = getString(R.string.err_email_is_not_valid)
 
-            etPasswordLayout.error = if(password.isBlank()) getString(R.string.err_password_is_empty) else null
+            etPasswordLayout.error = if (password.isBlank()) getString(R.string.err_password_is_empty) else null
             etEmailLayout.error = emailErr
             return
         }
@@ -61,7 +62,7 @@ class LoginActivity : BaseActivity(){
         viewModel.logIn(email = email, password = password)
     }
 
-    private fun startMainActivity(){
+    private fun startMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
