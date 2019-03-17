@@ -8,7 +8,6 @@ import bohdan.sushchak.elementzonetest.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class OrdersViewModel(repository: Repository) : BaseViewModel(repository) {
 
@@ -19,12 +18,11 @@ class OrdersViewModel(repository: Repository) : BaseViewModel(repository) {
 
     fun updateOrders() {
         GlobalScope.launch(Dispatchers.IO) {
-            try{
+            try {
                 val orderList = repository.getOrders()
-
                 _ordersLive.postValue(orderList)
-            }
-            catch (e: Exception) {
+
+            } catch (e: Exception) {
                 _apiException.postValue(e)
             }
         }

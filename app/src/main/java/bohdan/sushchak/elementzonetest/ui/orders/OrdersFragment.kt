@@ -1,6 +1,5 @@
 package bohdan.sushchak.elementzonetest.ui.orders
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
-import bohdan.sushchak.elementzonetest.internal.UnathorizedException
 import bohdan.sushchak.elementzonetest.ui.base.BaseFragment
-import bohdan.sushchak.elementzonetest.ui.login.LoginActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.orders_fragment.*
@@ -22,7 +19,6 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
-import java.io.IOException
 
 class OrdersFragment : BaseFragment(), KodeinAware {
 
@@ -63,6 +59,7 @@ class OrdersFragment : BaseFragment(), KodeinAware {
     }
 
     private fun initRecyclerView(orders: List<Order>) {
+        progressBar_loading.visibility = View.GONE
 
         val items = orders.toOrderItems()
 
