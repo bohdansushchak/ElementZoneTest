@@ -1,6 +1,5 @@
 package bohdan.sushchak.elementzonetest.data.network
 
-import bohdan.sushchak.elementzonetest.data.network.model.Product
 import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
 import bohdan.sushchak.elementzonetest.data.network.responces.MyResponse
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
@@ -9,12 +8,9 @@ import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ElementZoneApiService {
 
@@ -40,8 +36,8 @@ interface ElementZoneApiService {
                       @Field("date") date: String,
                       @Field("location") location: String,
                       @Field("price") price: Float,
-                      @Field("items") items: List<Product>
-    ):Deferred<Response<MyResponse<String>>>
+                      @Field("items[]") items: List<String>
+    ):Deferred<Response<MyResponse<Order>>>
 
     @FormUrlEncoded
     @POST("/order/{link}")

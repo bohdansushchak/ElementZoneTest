@@ -7,14 +7,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
-import bohdan.sushchak.elementzonetest.data.network.model.Product
 import bohdan.sushchak.elementzonetest.internal.LostArgumentsException
 import bohdan.sushchak.elementzonetest.ui.base.BaseFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.add_item_list_to_order_fragment.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kodein.di.generic.instance
 
@@ -42,8 +44,7 @@ class AddItemListToOrderFragment : BaseFragment() {
             .get(AddItemListToOrderViewModel::class.java)
 
         btnSaveOrder.setOnClickListener {
-            //saveOrder(shopTitle, location, date)
-            viewModel.saveOrder(shopTitle, location, date)
+            saveOrder(shopTitle, location, date)
         }
         fabAddProduct.setOnClickListener { addProduct() }
 
@@ -57,10 +58,13 @@ class AddItemListToOrderFragment : BaseFragment() {
         })
     }
 
-    private fun updateOrdersView(products: List<Product>) {
-        val productItemList = products.toProductItem { position ->
-            viewModel.removeProduct(products[position])
+    private fun updateOrdersView(products: List<String>) {
+        val productItemList = products.map {
+            ProductItem(it) { position ->
+                viewModel.removeProduct(products[position])
+            }
         }
+
         val groupAdapter = GroupAdapter<ViewHolder>().apply {
             addAll(productItemList)
         }
@@ -71,11 +75,12 @@ class AddItemListToOrderFragment : BaseFragment() {
         }
     }
 
-    private fun addProduct(){
+    private fun addProduct() {
         val titleProduct = etProductTitle.text.toString()
 
-        if(titleProduct.isBlank()){
-            Toast.makeText(this@AddItemListToOrderFragment.context,
+        if (titleProduct.isBlank()) {
+            Toast.makeText(
+                this@AddItemListToOrderFragment.context,
                 R.string.err_product_title_is_empty,
                 Toast.LENGTH_SHORT
             ).show()
@@ -86,14 +91,31 @@ class AddItemListToOrderFragment : BaseFragment() {
         etProductTitle.text = null
     }
 
-    private fun saveOrder(shopTitle: String, location: String, date: String){
+    private fun saveOrder(shopTitle: String, location: String, date: String) {
+        val priceText = etProductPrice.text.toString()
 
-        viewModel.saveOrder(shopTitle, location, date)
-    }
+        if (priceText.isBlank()) {
+            Toast.makeText(context, R.string.err_price_is_empty, Toast.LENGTH_SHORT).show()
+            return
+        }
 
-    private fun List<Product>.toProductItem(onClick: ((position: Int) -> Unit)?): List<ProductItem> {
-        return this.map {
-            ProductItem(it, onClick)
+        val price = priceText.toFloat()
+
+        launch(Dispatchers.Main) {
+            val isSucc = viewModel.saveOrder(shopTitle, location, date, price)
+
+            if(isSucc)
+            {
+                val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
+                navigationController.navigate(R.id.action_addItemListToOrderFragment_to_orders,
+                    null,
+                    NavOptions.Builder()
+                        .setPopUpTo(R.id.orders,
+                            false)
+                        .build()
+                )
+                navigationController.popBackStack(R.id.orders, true)
+            }
         }
     }
 }

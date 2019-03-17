@@ -8,6 +8,6 @@ class AboutOrderViewModelFactory(private val repository: Repository) : ViewModel
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return AboutOrderViewModelFactory(repository) as T
+        return AboutOrderViewModel(repository) as T
     }
 }

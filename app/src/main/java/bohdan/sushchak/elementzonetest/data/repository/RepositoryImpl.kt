@@ -35,4 +35,15 @@ class RepositoryImpl(private var restService: RESTService) : Repository {
             return@withContext orders?.data?: arrayListOf()//TODO fix this
         }
     }
+
+    override suspend fun addOrder(date: String,
+                                  location: String,
+                                  price: Float,
+                                  items: List<String>): Order {
+       return withContext(Dispatchers.IO) {
+           val responce = restService.addOrder(date, location, price, items)
+
+           return@withContext responce?.data!!
+       }
+    }
 }

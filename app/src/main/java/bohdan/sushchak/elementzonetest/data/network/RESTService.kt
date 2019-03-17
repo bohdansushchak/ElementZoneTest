@@ -19,4 +19,12 @@ interface RESTService {
         offSet: Int,
         limit: Int
     ): MyResponse<List<Order>>?
+
+    suspend fun addOrder(
+        date: String,
+        location: String,
+        price: Float,
+        items: List<String>
+    ): MyResponse<Order>?
+
 }

@@ -25,9 +25,7 @@ class RESTServiceImpl(
         get() = _apiException
 
     override suspend fun logIn(email: String, password: String): MyResponse<LoginData>? {
-        val loginResponseDeff = elementZoneApiService.logInAsync(email, password)
-        val response = loginResponseDeff.await()
-
+        val response = elementZoneApiService.logInAsync(email, password).await()
         try {
 
             if (response.isSuccessful) {
@@ -47,7 +45,6 @@ class RESTServiceImpl(
     }
 
     override suspend fun getOrders(offSet: Int, limit: Int): MyResponse<List<Order>>? {
-
         val apiToken = tokenProvider.apiTokenAsync.await()
         val responseOrderListDeff = elementZoneApiService.getOrdersAsync(apiToken)
         val response = responseOrderListDeff.await()
@@ -75,6 +72,28 @@ class RESTServiceImpl(
                 Log.e("ERR", e.message, e)
             }
         }
+    }
+
+    override suspend fun addOrder(date: String, location: String, price: Float, items: List<String>): MyResponse<Order>? {
+        val token = tokenProvider.apiTokenAsync.await()
+        val response = elementZoneApiService.addOrderAsync(
+            token,
+            date,
+            location,
+            price,
+            items
+        ).await()
+
+        try {
+            if (response.isSuccessful)
+                return response.body()
+            fetchException(response = response)
+        } catch (e: NoConnectivityException) {
+
+        } catch (e: HttpException) {
+            fetchException(response = response)
+        }
+        return null
     }
 }
 

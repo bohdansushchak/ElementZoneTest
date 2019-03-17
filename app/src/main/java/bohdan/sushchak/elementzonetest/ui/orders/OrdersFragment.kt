@@ -38,7 +38,9 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(OrdersViewModel::class.java)
 
-        fabCreateOrder.setOnClickListener { navigateTo(R.id.action_orders_to_createOrderFragment) }
+        fabCreateOrder.setOnClickListener {
+            navigationController.navigate(R.id.action_orders_to_createOrderFragment)
+        }
         bindUI()
     }
 
@@ -76,6 +78,6 @@ class OrdersFragment : BaseFragment(), KodeinAware {
 
     private fun startAboutFragment(order: Order) {
 
-        navigateTo(R.id.action_orders_to_aboutOrderFragment)
+        navigationController.navigate(R.id.action_orders_to_aboutOrderFragment)
     }
 }

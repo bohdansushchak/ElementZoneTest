@@ -20,10 +20,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        actionBar?.customView = toolbar
-        actionBar?.isHideOnContentScrollEnabled
-        actionBar?.hide()
-
         navController = Navigation.findNavController(this@MainActivity, R.id.nav_host_fragment)
         navController.addOnDestinationChangedListener(this@MainActivity)
     }

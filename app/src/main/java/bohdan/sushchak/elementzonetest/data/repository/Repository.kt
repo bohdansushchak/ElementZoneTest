@@ -12,4 +12,9 @@ interface Repository {
     suspend fun logIn(email: String, password: String): LoginData?
 
     suspend fun getOrders(): List<Order>
+
+    suspend fun addOrder(date: String,
+                         location: String,
+                         price: Float,
+                         items: List<String>): Order?
 }

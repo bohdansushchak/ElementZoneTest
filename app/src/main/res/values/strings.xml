@@ -29,6 +29,7 @@
     <string name="err_shop_location_is_blank">Wpisz lokalizację</string>
     <string name="err_shop_date_is_blank">Wybierz datę</string>
     <string name="err_product_title_is_empty">Wpisz nazwę produktu</string>
+    <string name="err_price_is_empty">Wpisz cenę</string>
 
     <!-- text -->
     <string name="txt_product">Produkt</string>

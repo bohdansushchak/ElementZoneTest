@@ -18,20 +18,15 @@ open class BaseFragment : Fragment(), KodeinAware, CoroutineScope {
 
     private lateinit var job: Job
 
+    protected val navigationController
+    get() = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
+
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         job = Job()
-    }
-
-    protected fun navigateTo(destination: Int) {
-        if (activity != null) {
-            val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
-            navigationController.navigate(destination)
-
-        } else throw Exception("Activity is null")
     }
 
     override fun onDestroy() {

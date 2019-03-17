@@ -1,17 +1,16 @@
 package bohdan.sushchak.elementzonetest.ui.item_list
 
 import bohdan.sushchak.elementzonetest.R
-import bohdan.sushchak.elementzonetest.data.network.model.Product
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.product_item.*
 
-class ProductItem(private val product: Product,
+class ProductItem(private val product: String,
                   private var onClick: ((position: Int) -> Unit)? = null): Item() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
        viewHolder.apply {
-           tvProductTitle.text = product.item
+           tvProductTitle.text = product
 
            ivRemove.setOnClickListener {
                 onClick?.invoke(position)

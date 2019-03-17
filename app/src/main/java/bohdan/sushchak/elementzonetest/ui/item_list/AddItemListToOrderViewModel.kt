@@ -1,20 +1,20 @@
 package bohdan.sushchak.elementzonetest.ui.item_list
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import bohdan.sushchak.elementzonetest.data.network.model.Product
 import bohdan.sushchak.elementzonetest.data.repository.Repository
 import bohdan.sushchak.elementzonetest.ui.base.BaseViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddItemListToOrderViewModel(repository: Repository) : BaseViewModel(repository) {
 
-    val productListLive :LiveData<MutableList<Product>>
-    get() = _productListLive
+    val productListLive: LiveData<MutableList<String>>
+        get() = _productListLive
 
-    private val _productListLive = MutableLiveData<MutableList<Product>>()
+    private val _productListLive = MutableLiveData<MutableList<String>>()
 
     init {
         _productListLive.value = mutableListOf()
@@ -23,13 +23,12 @@ class AddItemListToOrderViewModel(repository: Repository) : BaseViewModel(reposi
     fun addProduct(productTitle: String) {
         GlobalScope.launch {
             val productList = _productListLive.value
-            productList?.add(Product(productTitle))
-
+            productList?.add(productTitle)
             _productListLive.postValue(productList)
         }
     }
 
-    fun removeProduct(product: Product) {
+    fun removeProduct(product: String) {
         GlobalScope.launch {
             val productList = _productListLive.value
             productList?.remove(product)
@@ -38,8 +37,14 @@ class AddItemListToOrderViewModel(repository: Repository) : BaseViewModel(reposi
         }
     }
 
-    fun saveOrder(shopTitle: String, location: String, date: String) {
+    suspend fun saveOrder(shopTitle: String, location: String, date: String, price: Float): Boolean {
+        return withContext(Dispatchers.IO) {
+            val items = _productListLive.value?: listOf<String>()
 
-        Log.d("ARG", "$shopTitle, $location, $date" )
+            val order = repository.addOrder(date, location, price, items)
+            val isSuccesfull = order != null
+
+            return@withContext isSuccesfull
+        }
     }
 }
