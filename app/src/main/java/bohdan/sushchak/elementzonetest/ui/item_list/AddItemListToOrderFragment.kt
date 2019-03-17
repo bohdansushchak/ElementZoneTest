@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
+import bohdan.sushchak.elementzonetest.internal.DecimalDigitsInputFilter
 import bohdan.sushchak.elementzonetest.ui.base.BaseFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -52,6 +53,10 @@ class AddItemListToOrderFragment : BaseFragment() {
     }
 
     private fun bindUI() = launch(Dispatchers.Main) {
+
+        etProductPrice.filters = arrayOf(
+            DecimalDigitsInputFilter(5, 2)
+        )
 
         viewModel.productListLive.observe(this@AddItemListToOrderFragment, Observer { productList ->
             updateOrdersView(productList)
