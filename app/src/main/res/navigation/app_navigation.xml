@@ -22,6 +22,7 @@
                 android:name="isNeedUpdateOrders"
                 app:argType="boolean"
                 android:defaultValue="false"/>
+        <action android:id="@+id/actionLoginActivity" app:destination="@id/loginActivity"/>
     </fragment>
 
     <fragment android:id="@+id/createOrderFragment"
@@ -54,4 +55,6 @@
               tools:layout="@layout/order_detail_fragment">
         <argument android:name="order" app:argType="bohdan.sushchak.elementzonetest.data.network.responces.Order"/>
     </fragment>
+    <activity android:id="@+id/loginActivity" android:name="bohdan.sushchak.elementzonetest.ui.login.LoginActivity"
+              android:label="activity_login" tools:layout="@layout/activity_login"/>
 </navigation>

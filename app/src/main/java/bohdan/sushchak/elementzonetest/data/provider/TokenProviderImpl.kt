@@ -2,16 +2,14 @@ package bohdan.sushchak.elementzonetest.data.provider
 
 import android.annotation.SuppressLint
 import android.content.Context
-import bohdan.sushchak.elementzonetest.data.network.ElementZoneApiService
 import bohdan.sushchak.elementzonetest.data.network.responces.ApiTokenExpires
 import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
 import bohdan.sushchak.elementzonetest.internal.Constants
-import bohdan.sushchak.elementzonetest.internal.Constants.STR_EMPTY
 import com.google.gson.Gson
-import kotlinx.coroutines.*
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.closestKodein
-import org.kodein.di.generic.instance
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,45 +18,19 @@ const val API_TOKEN_EXPIRES = "API_TOKEN_EXPIRES"
 
 class TokenProviderImpl(
     context: Context
-) : PreferenceProvider(context = context), TokenProvider, KodeinAware {
-
-    override val kodein by closestKodein(context)
-    private val apiService: ElementZoneApiService by instance()
-
+) : PreferenceProvider(context = context), TokenProvider {
     override val needUpdate: Boolean
-        get() = isNeedUpdateToken(apiTokenExpires)
+        get() = isNeedUpdateToken()
 
-    override
-    val hasToken: Boolean
-        get() = apiToken != STR_EMPTY
+    override var apiToken: String? = preferences.getString(API_TOKEN_KEY, null)
 
-    private lateinit var apiToken: String
+    override val hasToken: Boolean
+        get() = !apiToken.isNullOrEmpty()
 
-    private var apiTokenExpires: ApiTokenExpires? = null
+    private var apiTokenExpires: ApiTokenExpires? = initTokenExpires()
 
-    override val apiTokenAsync: Deferred<String>
-        get() = GlobalScope.async {
-            val token = apiToken
-
-            if (needUpdate)
-                refreshToken()
-
-            return@async token
-        }
-
-    init {
-        GlobalScope.launch {
-            apiToken = preferences.getString(API_TOKEN_KEY, STR_EMPTY) ?: STR_EMPTY
-            val apiTokenExpiresJson = preferences.getString(API_TOKEN_EXPIRES, null)
-
-            apiTokenExpiresJson?.let {
-                Gson().fromJson(it, ApiTokenExpires::class.java)
-            }
-        }
-    }
-
-    override suspend fun saveToken(loginData: LoginData) {
-        GlobalScope.launch(Dispatchers.IO) {
+    override suspend fun saveTokenAsync(loginData: LoginData): Deferred<Unit> {
+        return GlobalScope.async(Dispatchers.IO) {
             val jsonTokenExpires = Gson().toJson(loginData.apiTokenExpires)
 
             apiToken = loginData.apiToken
@@ -71,35 +43,36 @@ class TokenProviderImpl(
         }
     }
 
-    override suspend fun refreshToken(): Boolean {
-        return withContext(Dispatchers.IO) {
-            val response = apiService.refreshTokenAsync(apiToken).await()
-
-            return@withContext response.isSuccessful && response.body()?.data!!
-        }
-    }
-
     @SuppressLint("SimpleDateFormat")
-    private fun isNeedUpdateToken(tokenExpires: ApiTokenExpires?): Boolean {
-        if (tokenExpires?.date.isNullOrEmpty())
+    private fun isNeedUpdateToken(): Boolean {
+        if (apiTokenExpires == null)
+            initTokenExpires()
+
+        if (apiTokenExpires?.date.isNullOrEmpty())
             return true
 
         val apiDateSdf = SimpleDateFormat(Constants.API_DATE_FORMAT_PATTERN)
-        val dateTokenExpires = apiDateSdf.parse(tokenExpires?.date)
+        val dateTokenExpires = apiDateSdf.parse(apiTokenExpires?.date)
 
         val currentDate = Date()
 //TODO fix: add comparing with time zone
         return currentDate.before(dateTokenExpires)
     }
 
-    override suspend fun clearToken() {
-        GlobalScope.launch {
-            preferences.edit().apply {
-                remove(API_TOKEN_KEY)
-                remove(API_TOKEN_EXPIRES)
-            }.apply()
+    override fun clearToken()
+    {
+        apiToken = null
+        apiTokenExpires = null
 
-            apiToken = STR_EMPTY
-        }
+        preferences.edit().apply {
+            remove(API_TOKEN_KEY)
+            remove(API_TOKEN_EXPIRES)
+        }.apply()
+    }
+
+    private fun initTokenExpires(): ApiTokenExpires? {
+        val apiTokenExpiresJson = preferences.getString(API_TOKEN_EXPIRES, null) ?: return null
+
+        return Gson().fromJson(apiTokenExpiresJson, ApiTokenExpires::class.java)
     }
 }

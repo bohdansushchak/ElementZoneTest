@@ -1,18 +1,12 @@
 package bohdan.sushchak.elementzonetest.data.network
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import bohdan.sushchak.elementzonetest.data.network.responces.ApiError
 import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
 import bohdan.sushchak.elementzonetest.data.network.responces.MyResponse
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
 import bohdan.sushchak.elementzonetest.data.provider.TokenProvider
-import bohdan.sushchak.elementzonetest.internal.NoConnectivityException
+import bohdan.sushchak.elementzonetest.internal.BadRequestException
+import bohdan.sushchak.elementzonetest.internal.UnathorizedException
 import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import retrofit2.Response
 
 class RESTServiceImpl(
@@ -20,62 +14,53 @@ class RESTServiceImpl(
     private val tokenProvider: TokenProvider
 ) : RESTService {
 
-    private val _apiException = MutableLiveData<ApiError>()
-    override val apiException: LiveData<ApiError>
-        get() = _apiException
-
     override suspend fun logIn(email: String, password: String): MyResponse<LoginData>? {
         val response = elementZoneApiService.logInAsync(email, password).await()
-        try {
 
-            if (response.isSuccessful) {
+        if (response.isSuccessful) {
 
-                val loginData = response.body()?.data!!
-                tokenProvider.saveToken(loginData)
+            val loginData = response.body()?.data!!
+            tokenProvider.saveTokenAsync(loginData).await()
 
-                return response.body()
-            }
-            fetchException(response)
-        } catch (e: NoConnectivityException) {
-
-        } catch (e: HttpException) {
-            fetchException(response)
+            return response.body()
         }
+        fetchError(response)
+
         return null
     }
 
     override suspend fun getOrders(offSet: Int, limit: Int): MyResponse<List<Order>>? {
-        val apiToken = tokenProvider.apiTokenAsync.await()
+        val apiToken = getTokenAsync()
         val responseOrderListDeff = elementZoneApiService.getOrdersAsync(apiToken)
         val response = responseOrderListDeff.await()
 
-        try {
-            if (response.isSuccessful)
-                return response.body()
-            fetchException(response = response)
-        } catch (e: NoConnectivityException) {
+        if (response.isSuccessful)
+            return response.body()
+        fetchError(response = response)
 
-        } catch (e: HttpException) {
-            fetchException(response = response)
-        }
         return null
     }
 
-    private fun <T : Any> fetchException(response: Response<MyResponse<T>>) {
-        GlobalScope.launch {
-            try {
-                val strJson = response.errorBody()?.string()
-                val apiError = Gson().fromJson(strJson, MyResponse::class.java).error
+    private fun <T : Any> fetchError(response: Response<MyResponse<T>>) {
+        val strJson = response.errorBody()?.string()
+        val apiError = Gson().fromJson(strJson, MyResponse::class.java).error
 
-                _apiException.postValue(apiError)
-            } catch (e: Exception) {
-                Log.e("ERR", e.message, e)
-            }
+        if (apiError?.code == 401){
+            tokenProvider.clearToken()
+            throw UnathorizedException()
         }
+
+        throw BadRequestException(apiError?.message)
     }
 
-    override suspend fun addOrder(date: String, location: String, price: Float, items: List<String>): MyResponse<Order>? {
-        val token = tokenProvider.apiTokenAsync.await()
+    override suspend fun addOrder(
+        date: String,
+        location: String,
+        price: Float,
+        items: List<String>
+    ): MyResponse<Order>? {
+
+        val token = getTokenAsync()
         val response = elementZoneApiService.addOrderAsync(
             token,
             date,
@@ -84,32 +69,41 @@ class RESTServiceImpl(
             items
         ).await()
 
-        try {
-            if (response.isSuccessful)
-                return response.body()
-            fetchException(response = response)
-        } catch (e: NoConnectivityException) {
-
-        } catch (e: HttpException) {
-            fetchException(response = response)
-        }
+        if (response.isSuccessful)
+            return response.body()
+        fetchError(response = response)
         return null
     }
 
     override suspend fun generateLink(orderId: Long): MyResponse<Map<String, String>>? {
-        val token = tokenProvider.apiTokenAsync.await()
+
+        val token = getTokenAsync()
         val response = elementZoneApiService.generateLinkAsync(token, orderId).await()
 
-        try {
-            if(response.isSuccessful)
-                return response.body()
-            fetchException(response)
-        }
-        catch (e: Exception){
-            fetchException(response)
-        }
+        if (response.isSuccessful)
+            return response.body()
+        fetchError(response)
 
         return null
+    }
+
+    private suspend fun getTokenAsync(shouldRefresh: Boolean = false): String {
+        suspend fun refreshToken() {
+            val token = tokenProvider.apiToken
+
+            val response = elementZoneApiService.refreshTokenAsync(token!!).await()
+
+            if (!response.isSuccessful)
+                fetchError(response)
+        }
+
+        if (tokenProvider.apiToken.isNullOrEmpty())
+            throw UnathorizedException()
+
+        if (tokenProvider.needUpdate || !shouldRefresh)
+            refreshToken()
+
+        return tokenProvider.apiToken!!
     }
 }
 

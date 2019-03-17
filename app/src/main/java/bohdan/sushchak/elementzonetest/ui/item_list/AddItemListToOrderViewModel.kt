@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 
 class AddItemListToOrderViewModel(repository: Repository) : BaseViewModel(repository) {
 
@@ -39,12 +40,18 @@ class AddItemListToOrderViewModel(repository: Repository) : BaseViewModel(reposi
 
     suspend fun saveOrder(shopTitle: String, location: String, date: String, price: Float): Boolean {
         return withContext(Dispatchers.IO) {
-            val items = _productListLive.value?: listOf<String>()
+            try{
+                val items = _productListLive.value?: listOf<String>()
 
-            val order = repository.addOrder(date, location, price, items)
-            val isSuccesfull = order != null
+                val order = repository.addOrder(date, location, price, items)
+                val isSuccesfull = order != null
 
-            return@withContext isSuccesfull
+                return@withContext isSuccesfull
+            }
+            catch (e: Exception) {
+                _apiException.postValue(e)
+            }
+            return@withContext false
         }
     }
 }

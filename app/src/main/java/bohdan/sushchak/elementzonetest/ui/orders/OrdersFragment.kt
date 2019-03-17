@@ -1,18 +1,18 @@
 package bohdan.sushchak.elementzonetest.ui.orders
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
+import bohdan.sushchak.elementzonetest.internal.UnathorizedException
 import bohdan.sushchak.elementzonetest.ui.base.BaseFragment
+import bohdan.sushchak.elementzonetest.ui.login.LoginActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.orders_fragment.*
@@ -22,6 +22,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+import java.io.IOException
 
 class OrdersFragment : BaseFragment(), KodeinAware {
 
@@ -45,7 +46,7 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         viewModel.updateOrders()
 
         fabCreateOrder.setOnClickListener {
-            findNavController().navigate(R.id.actionCreateOrder)
+            getNavController(it).navigate(R.id.actionCreateOrder)
         }
 
         bindUI()
@@ -56,8 +57,8 @@ class OrdersFragment : BaseFragment(), KodeinAware {
             initRecyclerView(orders)
         })
 
-        viewModel.apiException.observe(this@OrdersFragment, Observer {apiErr ->
-            Toast.makeText(context, apiErr.message, Toast.LENGTH_SHORT).show()
+        viewModel.apiException.observe(this@OrdersFragment, Observer { exception ->
+            handleException(exception)
         })
     }
 
@@ -89,8 +90,6 @@ class OrdersFragment : BaseFragment(), KodeinAware {
 
     private fun startOrderDetailFragment(view: View, order: Order) {
         val action = OrdersFragmentDirections.actionDetailOrder(order)
-        val navController = Navigation.findNavController(view)
-        navController.setGraph(R.navigation.app_navigation)
-        navController.navigate(action)
+        getNavController(view).navigate(action)
     }
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.generic.instance
+import java.io.IOException
 
 class OrderDetailFragment : BaseFragment() {
 
@@ -50,6 +52,9 @@ class OrderDetailFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun bindUI(order: Order) = launch(Dispatchers.Main) {
+        viewModel.apiException.observe(this@OrderDetailFragment, Observer { exception ->
+            handleException(exception)
+        })
 
         tvShopTitle.text = "Title id: ${order.id}"
         tvLocation.text = order.location
@@ -74,18 +79,21 @@ class OrderDetailFragment : BaseFragment() {
         }
     }
 
-    private fun List<Item>.toProductItem(): List<ProductItem>{
+    private fun List<Item>.toProductItem(): List<ProductItem> {
         return this.map { ProductItem(it) }
     }
 
     private fun generateLink(order: Order) {
         GlobalScope.launch(Dispatchers.Main) {
             val url = viewModel.generateLink(order.id)
-            share(url)
+            url?.let { share(it) }
         }
     }
 
-    private fun share(url: String){
+    private fun share(url: String) {
+        if (url.isBlank())
+            return
+
         val intentSend = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, url)
@@ -93,7 +101,7 @@ class OrderDetailFragment : BaseFragment() {
         }
 
         activity?.packageManager?.let {
-            if(intentSend.resolveActivity(it) != null)
+            if (intentSend.resolveActivity(it) != null)
                 startActivity(intentSend)
             else
                 Toast.makeText(context, R.string.err_not_exist_app_to_send, Toast.LENGTH_SHORT).show()

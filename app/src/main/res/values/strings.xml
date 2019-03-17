@@ -32,6 +32,7 @@
     <string name="err_price_is_empty">Wpisz cenę</string>
     <string name="err_items_is_empty">Dodaj produkt</string>
     <string name="err_not_exist_app_to_send">Nie masz aplikacjii dla wyslania zaproszenia</string>
+    <string name="err_check_internet_connection">Sprawdż polączenie z internetem</string>
 
     <!-- text -->
     <string name="txt_product">Produkt</string>

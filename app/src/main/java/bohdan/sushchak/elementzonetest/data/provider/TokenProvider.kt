@@ -5,17 +5,13 @@ import kotlinx.coroutines.Deferred
 
 interface TokenProvider {
 
-    //var apiToken: String
-
     val hasToken: Boolean
 
     val needUpdate: Boolean
 
-    val apiTokenAsync: Deferred<String>
+    val apiToken: String?
 
-    suspend fun refreshToken(): Boolean
+    suspend fun saveTokenAsync(loginData: LoginData): Deferred<Unit>
 
-    suspend fun saveToken(loginData: LoginData)
-
-    suspend fun clearToken()
+    fun clearToken()
 }

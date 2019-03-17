@@ -19,8 +19,9 @@ class ElementZoneApplication : Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidXModule(this@ElementZoneApplication))
 
-        bind() from singleton { ElementZoneApiService() }
+        bind() from singleton { ElementZoneApiService(instance()) }
 
+        bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind<RESTService>() with singleton {  RESTServiceImpl(instance(), instance())}
         bind<Repository>() with singleton { RepositoryImpl(instance()) }
 

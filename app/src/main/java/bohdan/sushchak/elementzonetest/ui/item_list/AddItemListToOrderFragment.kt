@@ -57,8 +57,8 @@ class AddItemListToOrderFragment : BaseFragment() {
             updateOrdersView(productList)
         })
 
-        viewModel.apiException.observe(this@AddItemListToOrderFragment, Observer { apiErr ->
-            Toast.makeText(context, apiErr.message, Toast.LENGTH_SHORT).show()
+        viewModel.apiException.observe(this@AddItemListToOrderFragment, Observer { exception ->
+            handleException(exception)
         })
     }
 

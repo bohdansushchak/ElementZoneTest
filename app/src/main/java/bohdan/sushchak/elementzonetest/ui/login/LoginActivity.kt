@@ -2,7 +2,6 @@ package bohdan.sushchak.elementzonetest.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bohdan.sushchak.elementzonetest.R
@@ -11,6 +10,7 @@ import bohdan.sushchak.elementzonetest.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.launch
 import org.kodein.di.generic.instance
+import java.io.IOException
 
 class LoginActivity : BaseActivity() {
 
@@ -28,7 +28,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun bindUI() = launch {
-        if (viewModel.hasSavedToken.await())
+        if (viewModel.hasSavedToken)
             startMainActivity()
 
         viewModel.isLoggedIn.observe(this@LoginActivity, Observer { isLoggedIn ->
@@ -38,7 +38,8 @@ class LoginActivity : BaseActivity() {
         })
 
         viewModel.apiException.observe(this@LoginActivity, Observer { err ->
-            Toast.makeText(this@LoginActivity, err.message, Toast.LENGTH_LONG).show()
+            if(err is IOException)
+                toastException(err)
         })
     }
 

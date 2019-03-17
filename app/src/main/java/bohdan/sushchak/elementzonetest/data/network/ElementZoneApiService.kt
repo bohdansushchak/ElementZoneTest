@@ -53,12 +53,15 @@ interface ElementZoneApiService {
     ):Deferred<Response<MyResponse<Map<String, String>>>>
 
     companion object {
-        operator fun invoke(): ElementZoneApiService {
+        operator fun invoke(
+            connectivityInterceptor: ConnectivityInterceptor
+        ): ElementZoneApiService {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
 
             val httpClient = OkHttpClient.Builder()
             httpClient.addInterceptor(logging)
+            httpClient.addInterceptor(connectivityInterceptor)
 
             return Retrofit.Builder()
                 .client(httpClient.build())

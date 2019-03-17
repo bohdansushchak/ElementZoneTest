@@ -1,14 +1,11 @@
 package bohdan.sushchak.elementzonetest.data.network
 
-import androidx.lifecycle.LiveData
-import bohdan.sushchak.elementzonetest.data.network.responces.ApiError
+
 import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
 import bohdan.sushchak.elementzonetest.data.network.responces.MyResponse
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
 
 interface RESTService {
-
-    val apiException: LiveData<ApiError>
 
     suspend fun logIn(
         email: String,
@@ -30,5 +27,4 @@ interface RESTService {
     suspend fun generateLink(
         orderId: Long
     ):  MyResponse<Map<String, String>>?
-
 }
