@@ -1,29 +1,25 @@
 <resources>
     <string name="app_name">ElementZoneTest</string>
 
-
     <!-- toolbar titles -->
     <string name="toolbar_title_shop_data">Dane sklepu</string>
     <string name="toolbar_title_order_list">Lista zakupów</string>
     <string name="toolbar_title_order_data">Dane zamówienia</string>
 
     <!--buttons -->
-    <string name="btn_log_in">LOG IN</string>
-    <string name="btn_next_step">NEXT STEP</string>
-    <string name="btn_done">Done</string>
+    <string name="btn_done">KONIEC</string>
     <string name="btn_share">ZAPROŚ</string>
 
     <!--hint strings-->
     <string name="et_hint_email">E-mail</string>
     <string name="et_hint_password">Hasło</string>
     <string name="et_hint_shop_title">Nazwa sklepu</string>
-    <string name="et_hint_location">Localizacja</string>
+    <string name="et_hint_location">Lokalizacja</string>
     <string name="et_hint_date">Data zakupów</string>
-    <string name="et_hint_product">Towar</string>
 
     <!-- messages-->
     <string name="err_email_is_empty">Wpisz coś</string>
-    <string name="err_password_is_empty">Haslo jest puste</string>
+    <string name="err_password_is_empty">Hasło jest puste</string>
     <string name="err_email_is_not_valid">Niepoprawny e-mail</string>
     <string name="err_shop_title_is_blank">Wpisz nazwę sklepu</string>
     <string name="err_shop_location_is_blank">Wpisz lokalizację</string>
@@ -31,10 +27,13 @@
     <string name="err_product_title_is_empty">Wpisz nazwę produktu</string>
     <string name="err_price_is_empty">Wpisz cenę</string>
     <string name="err_items_is_empty">Dodaj produkt</string>
-    <string name="err_not_exist_app_to_send">Nie masz aplikacjii dla wyslania zaproszenia</string>
+    <string name="err_not_exist_app_to_send">Nie masz aplikacjii do wysylania zaproszenia</string>
     <string name="err_check_internet_connection">Sprawdż polączenie z internetem</string>
 
     <!-- text -->
     <string name="txt_product">Produkt</string>
     <string name="txt_price">Kwota</string>
+    <string name="et_hint_product">Towar</string>
+    <string name="btn_log_in">ZALOGUJ SIĘ</string>
+    <string name="btn_next_step">NASTĘPNY KROK</string>
 </resources>

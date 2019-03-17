@@ -26,8 +26,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                android:backgroundTint="@color/colorAccent"
-                android:textColorHint="@color/colorHint"/>
+                style="@style/EditTextStyle"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,8 +48,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:hint="@string/et_hint_location"
-                android:backgroundTint="@color/colorAccent"
-                android:textColorHint="@color/colorHint"/>
+                style="@style/EditTextStyle"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -70,8 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:backgroundTint="@color/colorAccent"
-                android:textColorHint="@color/colorHint"
+                style="@style/EditTextStyle"
                 android:enabled="true"
                 android:clickable="true"
                 android:editable="false"
