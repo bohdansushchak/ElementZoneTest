@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
@@ -26,6 +27,8 @@ class OrdersFragment : BaseFragment(), KodeinAware {
     private lateinit var viewModel: OrdersViewModel
     private val viewModelFactory: OrdersViewModelFactory by instance()
 
+    private val args by navArgs<OrdersFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,9 +41,12 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(OrdersViewModel::class.java)
 
+        viewModel.updateOrders()
+
         fabCreateOrder.setOnClickListener {
-            navigationController.navigate(R.id.action_orders_to_createOrderFragment)
+            navigationController.navigate(R.id.actionCreateOrder)
         }
+
         bindUI()
     }
 
@@ -78,6 +84,6 @@ class OrdersFragment : BaseFragment(), KodeinAware {
 
     private fun startAboutFragment(order: Order) {
 
-        navigationController.navigate(R.id.action_orders_to_aboutOrderFragment)
+        navigationController.navigate(R.id.actionDetailOrder)
     }
 }

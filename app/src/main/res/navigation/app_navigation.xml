@@ -9,12 +9,19 @@
               android:label="orders_fragment"
               tools:layout="@layout/orders_fragment">
 
-        <action android:id="@+id/action_orders_to_createOrderFragment"
+        <action android:id="@+id/actionCreateOrder"
                 app:destination="@id/createOrderFragment"/>
 
-        <action android:id="@+id/action_orders_to_aboutOrderFragment"
+        <action android:id="@+id/actionDetailOrder"
                 app:destination="@id/aboutOrderFragment"/>
-        <argument android:name="isHideActionBar" app:argType="boolean" android:defaultValue="true"/>
+        <argument
+                android:name="isHideActionBar"
+                app:argType="boolean"
+                android:defaultValue="true"/>
+        <argument
+                android:name="isNeedUpdateOrders"
+                app:argType="boolean"
+                android:defaultValue="false"/>
     </fragment>
 
     <fragment android:id="@+id/createOrderFragment"
@@ -22,7 +29,7 @@
               android:label="@string/toolbar_title_shop_data"
               tools:layout="@layout/create_order_fragment">
 
-        <action android:id="@+id/action_createOrderFragment_to_addItemListToOrderFragment"
+        <action android:id="@+id/actionAddItemsToOrder"
                 app:destination="@id/addItemListToOrderFragment"/>
     </fragment>
 
@@ -34,10 +41,10 @@
         <argument android:name="location" app:argType="string"/>
         <argument android:name="date" app:argType="string"/>
         <action
-                android:id="@+id/action_addItemListToOrderFragment_to_orders"
+                android:id="@+id/actionOrders"
                 app:destination="@id/orders"
                 app:launchSingleTop="true"
-                app:popUpTo="@id/app_navigation"
+                app:popUpTo="@+id/app_navigation"
                 app:popUpToInclusive="true"/>
     </fragment>
 

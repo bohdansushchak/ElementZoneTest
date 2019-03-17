@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
-import bohdan.sushchak.elementzonetest.internal.LostArgumentsException
 import bohdan.sushchak.elementzonetest.ui.base.BaseFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -25,6 +23,8 @@ class AddItemListToOrderFragment : BaseFragment() {
     private lateinit var viewModel: AddItemListToOrderViewModel
     private val viewModelFactory: AddItemListToOrderViewModelFactory by instance()
 
+    private val args by navArgs<AddItemListToOrderFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,10 +35,9 @@ class AddItemListToOrderFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val safeArgs = arguments?.let { AddItemListToOrderFragmentArgs.fromBundle(it) }
-        val shopTitle = safeArgs?.shopTitle ?: throw LostArgumentsException()
-        val location = safeArgs.location
-        val date = safeArgs.date
+        val shopTitle = args.shopTitle
+        val location = args.location
+        val date = args.date
 
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(AddItemListToOrderViewModel::class.java)
@@ -106,14 +105,21 @@ class AddItemListToOrderFragment : BaseFragment() {
 
             if(isSucc)
             {
+/*
+               val actionOrders = AddItemListToOrderFragmentDirections
+                   .actionOrders()
+                   .apply {
+                   isNeedUpdateOrders = false
+               }
+
                 val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
-                navigationController.navigate(R.id.action_addItemListToOrderFragment_to_orders,
-                    null,
+                navigationController.navigate(actionOrders,
                     NavOptions.Builder()
                         .setPopUpTo(R.id.orders,
-                            false)
+                            true)
                         .build()
                 )
+*/
                 navigationController.popBackStack(R.id.orders, true)
             }
         }

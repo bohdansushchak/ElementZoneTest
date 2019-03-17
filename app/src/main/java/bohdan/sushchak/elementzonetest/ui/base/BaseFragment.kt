@@ -3,6 +3,7 @@ package bohdan.sushchak.elementzonetest.ui.base
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import bohdan.sushchak.elementzonetest.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
