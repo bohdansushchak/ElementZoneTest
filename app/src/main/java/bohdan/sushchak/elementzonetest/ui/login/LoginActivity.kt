@@ -37,7 +37,7 @@ class LoginActivity : BaseActivity() {
             }
         })
 
-        viewModel.logInError.observe(this@LoginActivity, Observer { err ->
+        viewModel.apiException.observe(this@LoginActivity, Observer { err ->
             Toast.makeText(this@LoginActivity, err.message, Toast.LENGTH_LONG).show()
         })
     }

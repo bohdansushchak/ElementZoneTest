@@ -2,18 +2,17 @@ package bohdan.sushchak.elementzonetest.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import bohdan.sushchak.elementzonetest.data.network.responces.ApiError
 import bohdan.sushchak.elementzonetest.data.provider.TokenProvider
 import bohdan.sushchak.elementzonetest.data.repository.Repository
 import bohdan.sushchak.elementzonetest.internal.lazyDeffered
+import bohdan.sushchak.elementzonetest.ui.base.BaseViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val repository: Repository,
+    repository: Repository,
     private val tokenProvider: TokenProvider
-) : ViewModel() {
+) : BaseViewModel(repository) {
 
     private val _isLoggedIn = MutableLiveData<Boolean>()
 
@@ -31,21 +30,11 @@ class LoginViewModel(
         }
     }
 
-    val logInError = MutableLiveData<ApiError>()
-
     fun logIn(email: String, password: String) {
         GlobalScope.launch {
             val result = repository.logIn(email, password)
             result?.let {
                 _isLoggedIn.postValue(it.apiToken.isNotEmpty())
-            }
-        }
-    }
-
-    init {
-        repository.apply {
-            apiException.observeForever {
-                logInError.postValue(it)
             }
         }
     }

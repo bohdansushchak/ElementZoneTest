@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
@@ -14,6 +16,7 @@ import bohdan.sushchak.elementzonetest.ui.base.BaseFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.orders_fragment.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -26,8 +29,6 @@ class OrdersFragment : BaseFragment(), KodeinAware {
 
     private lateinit var viewModel: OrdersViewModel
     private val viewModelFactory: OrdersViewModelFactory by instance()
-
-    private val args by navArgs<OrdersFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,15 +45,19 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         viewModel.updateOrders()
 
         fabCreateOrder.setOnClickListener {
-            navigationController.navigate(R.id.actionCreateOrder)
+            findNavController().navigate(R.id.actionCreateOrder)
         }
 
         bindUI()
     }
 
-    private fun bindUI() = launch {
+    private fun bindUI() = launch(Dispatchers.Main) {
         viewModel.ordersLive.observe(this@OrdersFragment, Observer { orders ->
             initRecyclerView(orders)
+        })
+
+        viewModel.apiException.observe(this@OrdersFragment, Observer {apiErr ->
+            Toast.makeText(context, apiErr.message, Toast.LENGTH_SHORT).show()
         })
     }
 
@@ -64,10 +69,10 @@ class OrdersFragment : BaseFragment(), KodeinAware {
             addAll(items)
         }
 
-        groupAdapter.setOnItemClickListener { item, _ ->
+        groupAdapter.setOnItemClickListener { item, view ->
             val index = items.indexOf(item)
             val selectedOrder = orders[index]
-            startOrderDetailFragment(selectedOrder)
+            startOrderDetailFragment(view, selectedOrder)
         }
 
         rlOrders.apply {
@@ -82,9 +87,10 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         }
     }
 
-    private fun startOrderDetailFragment(order: Order) {
-
+    private fun startOrderDetailFragment(view: View, order: Order) {
         val action = OrdersFragmentDirections.actionDetailOrder(order)
-        navigationController.navigate(action)
+        val navController = Navigation.findNavController(view)
+        navController.setGraph(R.navigation.app_navigation)
+        navController.navigate(action)
     }
 }

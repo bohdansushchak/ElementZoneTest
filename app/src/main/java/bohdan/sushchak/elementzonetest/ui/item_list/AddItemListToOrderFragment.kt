@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import bohdan.sushchak.elementzonetest.R
@@ -50,10 +51,14 @@ class AddItemListToOrderFragment : BaseFragment() {
         bindUI()
     }
 
-    private fun bindUI() = launch {
+    private fun bindUI() = launch(Dispatchers.Main) {
 
         viewModel.productListLive.observe(this@AddItemListToOrderFragment, Observer { productList ->
             updateOrdersView(productList)
+        })
+
+        viewModel.apiException.observe(this@AddItemListToOrderFragment, Observer { apiErr ->
+            Toast.makeText(context, apiErr.message, Toast.LENGTH_SHORT).show()
         })
     }
 
@@ -91,20 +96,15 @@ class AddItemListToOrderFragment : BaseFragment() {
     }
 
     private fun saveOrder(shopTitle: String, location: String, date: String) {
-        val priceText = etProductPrice.text.toString()
-
-        if (priceText.isBlank()) {
-            Toast.makeText(context, R.string.err_price_is_empty, Toast.LENGTH_SHORT).show()
+        if (!isDataValid())
             return
-        }
 
-        val price = priceText.toFloat()
+        val price = etProductPrice.text.toString().toFloat()
 
         launch(Dispatchers.Main) {
             val isSucc = viewModel.saveOrder(shopTitle, location, date, price)
 
-            if(isSucc)
-            {
+            if (isSucc) {
 /*
                val actionOrders = AddItemListToOrderFragmentDirections
                    .actionOrders()
@@ -120,8 +120,25 @@ class AddItemListToOrderFragment : BaseFragment() {
                         .build()
                 )
 */
-                navigationController.popBackStack(R.id.orders, true)
+                findNavController().popBackStack(R.id.orders, true)
             }
         }
+    }
+
+    private fun isDataValid(): Boolean {
+        fun showToast(errRes: Int) = Toast.makeText(context, errRes, Toast.LENGTH_SHORT).show()
+
+        var isOk = true
+        val priceText = etProductPrice.text.toString()
+
+        if (viewModel.productListLive.value?.size == 0) {
+            showToast(R.string.err_items_is_empty)
+            isOk = false
+        } else if (priceText.isBlank()) {
+            showToast(R.string.err_price_is_empty)
+            isOk = false
+        }
+
+        return isOk
     }
 }

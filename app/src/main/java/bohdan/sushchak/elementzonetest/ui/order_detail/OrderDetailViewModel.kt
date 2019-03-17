@@ -8,7 +8,6 @@ import kotlinx.coroutines.withContext
 
 class OrderDetailViewModel(repository: Repository) : BaseViewModel(repository) {
 
-
     suspend fun generateLink(): String {
         return withContext(Dispatchers.IO) {
 

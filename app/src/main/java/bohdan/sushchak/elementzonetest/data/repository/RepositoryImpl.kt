@@ -41,9 +41,10 @@ class RepositoryImpl(private var restService: RESTService) : Repository {
                                   price: Float,
                                   items: List<String>): Order {
        return withContext(Dispatchers.IO) {
+
            val responce = restService.addOrder(date, location, price, items)
 
-           return@withContext responce?.data!!
+           return@withContext responce?.data!! //TODO fix
        }
     }
 }
