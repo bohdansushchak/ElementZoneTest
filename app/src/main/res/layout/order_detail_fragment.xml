@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.about_order.AboutOrderFragment">
+        tools:context=".ui.order_detail.OrderDetailFragment">
 
     <ImageView
             android:scaleType="fitXY"
@@ -123,10 +123,11 @@
             android:id="@+id/vLine"/>
 
     <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProductList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
-            tools:listitem="@layout/about_order_product_item"
+            tools:listitem="@layout/order_detail_product_item"
             app:layout_constraintBottom_toTopOf="@+id/btnShare"
             app:layout_constraintTop_toBottomOf="@+id/vLine"
             app:layout_constraintStart_toStartOf="parent"

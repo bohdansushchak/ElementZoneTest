@@ -6,7 +6,7 @@ import bohdan.sushchak.elementzonetest.data.provider.TokenProvider
 import bohdan.sushchak.elementzonetest.data.provider.TokenProviderImpl
 import bohdan.sushchak.elementzonetest.data.repository.Repository
 import bohdan.sushchak.elementzonetest.data.repository.RepositoryImpl
-import bohdan.sushchak.elementzonetest.ui.about_order.AboutOrderViewModelFactory
+import bohdan.sushchak.elementzonetest.ui.order_detail.OrderDetailViewModelFactory
 import bohdan.sushchak.elementzonetest.ui.item_list.AddItemListToOrderViewModelFactory
 import bohdan.sushchak.elementzonetest.ui.login.LoginViewModelFactory
 import bohdan.sushchak.elementzonetest.ui.orders.OrdersViewModelFactory
@@ -29,6 +29,6 @@ class ElementZoneApplication : Application(), KodeinAware {
         bind() from provider { LoginViewModelFactory(instance(), instance())}
         bind() from provider { OrdersViewModelFactory(instance()) }
         bind() from provider { AddItemListToOrderViewModelFactory(instance()) }
-        bind() from provider { AboutOrderViewModelFactory(instance()) }
+        bind() from provider { OrderDetailViewModelFactory(instance()) }
     }
 }

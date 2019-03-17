@@ -1,7 +1,10 @@
 package bohdan.sushchak.elementzonetest.data.network.responces
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Order(
     @SerializedName("date")
     val date: String,
@@ -12,9 +15,9 @@ data class Order(
     @SerializedName("items")
     val items: List<Item>,
     @SerializedName("link")
-    val link: Any,
+    val link: String,
     @SerializedName("location")
     val location: String,
     @SerializedName("price")
     val price: Float
-)
+) : Parcelable

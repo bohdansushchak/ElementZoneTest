@@ -67,7 +67,7 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         groupAdapter.setOnItemClickListener { item, _ ->
             val index = items.indexOf(item)
             val selectedOrder = orders[index]
-            startAboutFragment(selectedOrder)
+            startOrderDetailFragment(selectedOrder)
         }
 
         rlOrders.apply {
@@ -82,8 +82,9 @@ class OrdersFragment : BaseFragment(), KodeinAware {
         }
     }
 
-    private fun startAboutFragment(order: Order) {
+    private fun startOrderDetailFragment(order: Order) {
 
-        navigationController.navigate(R.id.actionDetailOrder)
+        val action = OrdersFragmentDirections.actionDetailOrder(order)
+        navigationController.navigate(action)
     }
 }
