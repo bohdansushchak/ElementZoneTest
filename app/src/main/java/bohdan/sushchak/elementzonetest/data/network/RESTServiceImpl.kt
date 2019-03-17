@@ -95,5 +95,21 @@ class RESTServiceImpl(
         }
         return null
     }
+
+    override suspend fun generateLink(orderId: Long): MyResponse<Map<String, String>>? {
+        val token = tokenProvider.apiTokenAsync.await()
+        val response = elementZoneApiService.generateLinkAsync(token, orderId).await()
+
+        try {
+            if(response.isSuccessful)
+                return response.body()
+            fetchException(response)
+        }
+        catch (e: Exception){
+            fetchException(response)
+        }
+
+        return null
+    }
 }
 

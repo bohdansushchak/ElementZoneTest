@@ -1,10 +1,12 @@
 package bohdan.sushchak.elementzonetest.ui.order_detail
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +19,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.order_detail_fragment.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.generic.instance
 
@@ -41,6 +44,7 @@ class OrderDetailFragment : BaseFragment() {
 
         val order = args.order
 
+        btnShare.setOnClickListener { generateLink(order) }
         bindUI(order)
     }
 
@@ -72,5 +76,27 @@ class OrderDetailFragment : BaseFragment() {
 
     private fun List<Item>.toProductItem(): List<ProductItem>{
         return this.map { ProductItem(it) }
+    }
+
+    private fun generateLink(order: Order) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val url = viewModel.generateLink(order.id)
+            share(url)
+        }
+    }
+
+    private fun share(url: String){
+        val intentSend = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, url)
+            type = "text/plain"
+        }
+
+        activity?.packageManager?.let {
+            if(intentSend.resolveActivity(it) != null)
+                startActivity(intentSend)
+            else
+                Toast.makeText(context, R.string.err_not_exist_app_to_send, Toast.LENGTH_SHORT).show()
+        }
     }
 }

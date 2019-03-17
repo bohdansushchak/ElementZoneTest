@@ -105,21 +105,6 @@ class AddItemListToOrderFragment : BaseFragment() {
             val isSucc = viewModel.saveOrder(shopTitle, location, date, price)
 
             if (isSucc) {
-/*
-               val actionOrders = AddItemListToOrderFragmentDirections
-                   .actionOrders()
-                   .apply {
-                   isNeedUpdateOrders = false
-               }
-
-                val navigationController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
-                navigationController.navigate(actionOrders,
-                    NavOptions.Builder()
-                        .setPopUpTo(R.id.orders,
-                            true)
-                        .build()
-                )
-*/
                 findNavController().popBackStack(R.id.orders, true)
             }
         }

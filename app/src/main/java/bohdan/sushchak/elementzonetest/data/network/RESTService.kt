@@ -27,4 +27,8 @@ interface RESTService {
         items: List<String>
     ): MyResponse<Order>?
 
+    suspend fun generateLink(
+        orderId: Long
+    ):  MyResponse<Map<String, String>>?
+
 }

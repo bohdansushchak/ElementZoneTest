@@ -3,6 +3,7 @@ package bohdan.sushchak.elementzonetest.data.network
 import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
 import bohdan.sushchak.elementzonetest.data.network.responces.MyResponse
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
+import bohdan.sushchak.elementzonetest.internal.Constants
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
@@ -47,9 +48,9 @@ interface ElementZoneApiService {
 
     @FormUrlEncoded
     @POST("/generate")
-    fun generateLinkToOrferAsync(@Field("api_token") apiToken: String,
+    fun generateLinkAsync(@Field("api_token") apiToken: String,
                                  @Field("id") id: Long
-    ):Deferred<Response<MyResponse<Any>>>
+    ):Deferred<Response<MyResponse<Map<String, String>>>>
 
     companion object {
         operator fun invoke(): ElementZoneApiService {
@@ -61,7 +62,7 @@ interface ElementZoneApiService {
 
             return Retrofit.Builder()
                 .client(httpClient.build())
-                .baseUrl("https://test.elementzone.uk")
+                .baseUrl(Constants.BASE_URL)
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

@@ -9,12 +9,18 @@ interface Repository {
 
     val apiException: LiveData<ApiError>
 
-    suspend fun logIn(email: String, password: String): LoginData?
+    suspend fun logIn(email: String,
+                      password: String
+    ): LoginData?
 
     suspend fun getOrders(): List<Order>
 
-    suspend fun addOrder(date: String,
-                         location: String,
-                         price: Float,
-                         items: List<String>): Order?
+    suspend fun addOrder(
+        date: String,
+        location: String,
+        price: Float,
+        items: List<String>
+    ): Order?
+
+    suspend fun genereateLink(orderId: Long): String
 }
