@@ -7,5 +7,5 @@ class NoConnectivityException: IOException()
 
 class BadRequestException(message: String?): IOException(message)
 
-class UnathorizedException: Exception()
+class UnauthorizedException: Exception()
 

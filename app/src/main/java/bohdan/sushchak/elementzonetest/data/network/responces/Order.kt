@@ -10,6 +10,8 @@ data class Order(
     val date: String,
     @SerializedName("id")
     val id: Long,
+    @SerializedName("shop_name")
+    val shopName: String,
     @SerializedName("id_owner")
     val idOwner: Long,
     @SerializedName("items")

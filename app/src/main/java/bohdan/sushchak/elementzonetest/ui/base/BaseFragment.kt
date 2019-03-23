@@ -10,7 +10,7 @@ import androidx.navigation.Navigation
 import bohdan.sushchak.elementzonetest.R
 import bohdan.sushchak.elementzonetest.internal.BadRequestException
 import bohdan.sushchak.elementzonetest.internal.NoConnectivityException
-import bohdan.sushchak.elementzonetest.internal.UnathorizedException
+import bohdan.sushchak.elementzonetest.internal.UnauthorizedException
 import bohdan.sushchak.elementzonetest.ui.login.LoginActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -62,8 +62,7 @@ open class BaseFragment : Fragment(), KodeinAware, CoroutineScope {
             is BadRequestException ->
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
 
-            is UnathorizedException -> startLoginActivity()
-
+            is UnauthorizedException -> startLoginActivity()
         }
     }
 

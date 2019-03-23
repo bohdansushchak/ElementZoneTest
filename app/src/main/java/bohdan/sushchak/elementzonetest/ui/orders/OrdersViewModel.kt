@@ -14,7 +14,7 @@ class OrdersViewModel(repository: Repository) : BaseViewModel(repository) {
     val ordersLive: LiveData<List<Order>>
         get() = _ordersLive
 
-    private val _ordersLive = MutableLiveData<List<Order>>()
+    private val _ordersLive by lazy { MutableLiveData<List<Order>>() }
 
     fun updateOrders() {
         GlobalScope.launch(Dispatchers.IO) {

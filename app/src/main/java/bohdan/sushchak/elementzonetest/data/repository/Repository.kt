@@ -9,14 +9,15 @@ interface Repository {
                       password: String
     ): LoginData?
 
-    suspend fun getOrders(): List<Order>
+    suspend fun getOrders(): List<Order>?
 
     suspend fun addOrder(
         date: String,
         location: String,
+        shopName: String,
         price: Float,
         items: List<String>
     ): Order?
 
-    suspend fun generateLink(orderId: Long): String
+    suspend fun generateLink(orderId: Long): String?
 }

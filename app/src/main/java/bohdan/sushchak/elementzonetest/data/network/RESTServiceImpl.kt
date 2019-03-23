@@ -5,7 +5,7 @@ import bohdan.sushchak.elementzonetest.data.network.responces.MyResponse
 import bohdan.sushchak.elementzonetest.data.network.responces.Order
 import bohdan.sushchak.elementzonetest.data.provider.TokenProvider
 import bohdan.sushchak.elementzonetest.internal.BadRequestException
-import bohdan.sushchak.elementzonetest.internal.UnathorizedException
+import bohdan.sushchak.elementzonetest.internal.UnauthorizedException
 import com.google.gson.Gson
 import retrofit2.Response
 
@@ -47,7 +47,7 @@ class RESTServiceImpl(
 
         if (apiError?.code == 401){
             tokenProvider.clearToken()
-            throw UnathorizedException()
+            throw UnauthorizedException()
         }
 
         throw BadRequestException(apiError?.message)
@@ -55,6 +55,7 @@ class RESTServiceImpl(
 
     override suspend fun addOrder(
         date: String,
+        shopName: String,
         location: String,
         price: Float,
         items: List<String>
@@ -66,7 +67,8 @@ class RESTServiceImpl(
             date,
             location,
             price,
-            items
+            items,
+            shopName
         ).await()
 
         if (response.isSuccessful)
@@ -98,7 +100,7 @@ class RESTServiceImpl(
         }
 
         if (tokenProvider.apiToken.isNullOrEmpty())
-            throw UnathorizedException()
+            throw UnauthorizedException()
 
         if (tokenProvider.needUpdate || !shouldRefresh)
             refreshToken()

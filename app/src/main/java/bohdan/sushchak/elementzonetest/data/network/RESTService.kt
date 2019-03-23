@@ -19,6 +19,7 @@ interface RESTService {
 
     suspend fun addOrder(
         date: String,
+        shopName: String,
         location: String,
         price: Float,
         items: List<String>

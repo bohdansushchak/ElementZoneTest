@@ -8,17 +8,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.IOException
 
 class AddItemListToOrderViewModel(repository: Repository) : BaseViewModel(repository) {
 
     val productListLive: LiveData<MutableList<String>>
         get() = _productListLive
 
-    private val _productListLive = MutableLiveData<MutableList<String>>()
-
-    init {
-        _productListLive.value = mutableListOf()
+    private val _productListLive by lazy {
+        MutableLiveData<MutableList<String>>().apply {
+            value = mutableListOf()
+        }
     }
 
     fun addProduct(productTitle: String) {
@@ -38,17 +37,16 @@ class AddItemListToOrderViewModel(repository: Repository) : BaseViewModel(reposi
         }
     }
 
-    suspend fun saveOrder(shopTitle: String, location: String, date: String, price: Float): Boolean {
+    suspend fun saveOrder(shopName: String, location: String, date: String, price: Float): Boolean {
         return withContext(Dispatchers.IO) {
-            try{
-                val items = _productListLive.value?: listOf<String>()
+            try {
+                val items = _productListLive.value ?: listOf<String>()
 
-                val order = repository.addOrder(date, location, price, items)
+                val order = repository.addOrder(date, shopName, location, price, items)
                 val isSuccesfull = order != null
 
                 return@withContext isSuccesfull
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 _apiException.postValue(e)
             }
             return@withContext false

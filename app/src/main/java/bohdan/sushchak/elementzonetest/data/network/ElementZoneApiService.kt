@@ -37,7 +37,8 @@ interface ElementZoneApiService {
                       @Field("date") date: String,
                       @Field("location") location: String,
                       @Field("price") price: Float,
-                      @Field("items[]") items: List<String>
+                      @Field("items[]") items: List<String>,
+                      @Field("shop_name") shopName: String
     ):Deferred<Response<MyResponse<Order>>>
 
     @FormUrlEncoded

@@ -37,7 +37,7 @@ class AddItemListToOrderFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val shopTitle = args.shopTitle
+        val shopName = args.shopTitle
         val location = args.location
         val date = args.date
 
@@ -45,7 +45,7 @@ class AddItemListToOrderFragment : BaseFragment() {
             .get(AddItemListToOrderViewModel::class.java)
 
         btnSaveOrder.setOnClickListener {
-            saveOrder(shopTitle, location, date)
+            saveOrder(shopName, location, date)
         }
         fabAddProduct.setOnClickListener { addProduct() }
 
@@ -100,14 +100,14 @@ class AddItemListToOrderFragment : BaseFragment() {
         etProductTitle.text = null
     }
 
-    private fun saveOrder(shopTitle: String, location: String, date: String) {
+    private fun saveOrder(shopName: String, location: String, date: String) {
         if (!isDataValid())
             return
 
         val price = etProductPrice.text.toString().toFloat()
 
         launch(Dispatchers.Main) {
-            val isSucc = viewModel.saveOrder(shopTitle, location, date, price)
+            val isSucc = viewModel.saveOrder(shopName, location, date, price)
 
             if (isSucc) {
                 findNavController().popBackStack(R.id.orders, true)

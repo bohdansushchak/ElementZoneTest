@@ -1,6 +1,5 @@
 package bohdan.sushchak.elementzonetest.data.repository
 
-
 import bohdan.sushchak.elementzonetest.data.network.RESTService
 
 import bohdan.sushchak.elementzonetest.data.network.responces.LoginData
@@ -18,33 +17,34 @@ class RepositoryImpl(private var restService: RESTService) : Repository {
         }
     }
 
-    override suspend fun getOrders(): List<Order> {
+    override suspend fun getOrders(): List<Order>? {
         return withContext(Dispatchers.IO) {
             val orders = restService.getOrders(1, 1)
 
-            return@withContext orders?.data ?: arrayListOf()//TODO fix this
+            return@withContext orders?.data
         }
     }
 
     override suspend fun addOrder(
         date: String,
         location: String,
+        shopName: String,
         price: Float,
         items: List<String>
-    ): Order {
+    ): Order? {
         return withContext(Dispatchers.IO) {
 
-            val responce = restService.addOrder(date, location, price, items)
+            val response = restService.addOrder(date, shopName, location, price, items)
 
-            return@withContext responce?.data!! //TODO fix
+            return@withContext response?.data
         }
     }
 
     override suspend fun generateLink(orderId: Long): String {
         return withContext(Dispatchers.IO){
-            val responce = restService.generateLink(orderId)
+            val response = restService.generateLink(orderId)
 
-            val orderLink = responce?.data?.get("link")
+            val orderLink = response?.data?.get("link")
 
             if (orderLink.isNullOrEmpty())
                 return@withContext ""

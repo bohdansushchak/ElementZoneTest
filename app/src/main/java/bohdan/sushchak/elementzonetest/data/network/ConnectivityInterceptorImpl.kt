@@ -3,7 +3,6 @@ package bohdan.sushchak.elementzonetest.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import bohdan.sushchak.elementzonetest.internal.NoConnectivityException
-import bohdan.sushchak.elementzonetest.internal.UnathorizedException
 import okhttp3.Interceptor
 import okhttp3.Response
 

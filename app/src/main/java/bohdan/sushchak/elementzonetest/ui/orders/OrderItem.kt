@@ -13,7 +13,7 @@ class OrderItem(private val order: Order
     @SuppressLint("SetTextI18n")
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.apply {
-            tvOrderTitle.text = "Order title: ${order.id}"
+            tvOrderTitle.text = order.shopName
             tvOrderDate.text = normalizeDate(order.date)
         }
     }

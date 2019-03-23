@@ -16,6 +16,5 @@ class DecimalDigitsInputFilter(digitsBeforeDot: Int, digitsAfterDot: Int) : Inpu
         return if (!builder.toString().matches((pattern).toRegex())) {
             if (source.isNullOrEmpty()) dest.subSequence(dstart, dend) else ""
         } else null
-
     }
 }

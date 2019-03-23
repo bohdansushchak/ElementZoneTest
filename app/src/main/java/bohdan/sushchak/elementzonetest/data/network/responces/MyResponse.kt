@@ -9,6 +9,4 @@ data class MyResponse<out T: Any>(
 
     @SerializedName("error")
     val error: ApiError?
-
-
 )

@@ -1,7 +1,6 @@
 package bohdan.sushchak.elementzonetest.ui.base
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
