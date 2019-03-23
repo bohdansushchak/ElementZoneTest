@@ -63,12 +63,12 @@ class RESTServiceImpl(
 
         val token = getTokenAsync()
         val response = elementZoneApiService.addOrderAsync(
-            token,
-            date,
-            location,
-            price,
-            items,
-            shopName
+            apiToken = token,
+            date = date,
+            location = location,
+            price = price,
+            items = items,
+            shopName = shopName
         ).await()
 
         if (response.isSuccessful)

@@ -34,7 +34,12 @@ class RepositoryImpl(private var restService: RESTService) : Repository {
     ): Order? {
         return withContext(Dispatchers.IO) {
 
-            val response = restService.addOrder(date, shopName, location, price, items)
+            val response = restService.addOrder(
+                date = date,
+                shopName = shopName,
+                location = location,
+                price = price,
+                items = items)
 
             return@withContext response?.data
         }

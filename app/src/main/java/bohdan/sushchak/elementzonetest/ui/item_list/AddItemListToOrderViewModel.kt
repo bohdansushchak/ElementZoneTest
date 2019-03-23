@@ -42,7 +42,12 @@ class AddItemListToOrderViewModel(repository: Repository) : BaseViewModel(reposi
             try {
                 val items = _productListLive.value ?: listOf<String>()
 
-                val order = repository.addOrder(date, shopName, location, price, items)
+                val order = repository.addOrder( date = date,
+                    shopName = shopName,
+                    location = location,
+                    price = price,
+                    items = items)
+
                 val isSuccesfull = order != null
 
                 return@withContext isSuccesfull

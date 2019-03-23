@@ -45,7 +45,11 @@ class AddItemListToOrderFragment : BaseFragment() {
             .get(AddItemListToOrderViewModel::class.java)
 
         btnSaveOrder.setOnClickListener {
-            saveOrder(shopName, location, date)
+            saveOrder(
+                shopName = shopName,
+                location = location,
+                date = date
+            )
         }
         fabAddProduct.setOnClickListener { addProduct() }
 
@@ -107,7 +111,12 @@ class AddItemListToOrderFragment : BaseFragment() {
         val price = etProductPrice.text.toString().toFloat()
 
         launch(Dispatchers.Main) {
-            val isSucc = viewModel.saveOrder(shopName, location, date, price)
+            val isSucc = viewModel.saveOrder(
+                shopName = shopName,
+                location = location,
+                date = date,
+                price = price
+            )
 
             if (isSucc) {
                 findNavController().popBackStack(R.id.orders, true)

@@ -48,7 +48,11 @@ class CreateOrderFragment : BaseFragment() {
         }
 
         val actionAddProducts = CreateOrderFragmentDirections
-            .actionAddItemsToOrder(shopTitle, shopLocation, viewModel.apiDate)
+            .actionAddItemsToOrder(
+                shopTitle,
+                shopLocation,
+                viewModel.apiDate
+            )
         Navigation.findNavController(view).navigate(actionAddProducts)
     }
 

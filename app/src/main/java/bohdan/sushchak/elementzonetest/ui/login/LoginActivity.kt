@@ -38,7 +38,7 @@ class LoginActivity : BaseActivity() {
         })
 
         viewModel.apiException.observe(this@LoginActivity, Observer { err ->
-            if(err is IOException)
+            if (err is IOException)
                 toastException(err)
         })
     }
