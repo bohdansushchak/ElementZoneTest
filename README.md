@@ -1,4 +1,4 @@
-# ElementZoneTest
+# Shopping list
 
 Simple application to relief managing your shopping list. Using this app you can share a link and invite your friends to shop with you.
 
