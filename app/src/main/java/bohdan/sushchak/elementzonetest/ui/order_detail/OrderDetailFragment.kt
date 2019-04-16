@@ -55,7 +55,7 @@ class OrderDetailFragment : BaseFragment() {
             handleException(exception)
         })
 
-        tvShopTitle.text = "Title id: ${order.id}"
+        tvShopTitle.text = order.shopName
         tvLocation.text = order.location
 
         val normalDate = normalizeDate(order.date)

@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ElementZoneTest</string>
-    <string name="btn_done">Dona</string>
+    <string name="btn_done">Done</string>
     <string name="btn_log_in">LOG IN</string>
     <string name="btn_next_step">NEXT STEP</string>
     <string name="btn_share">SEND INVITE</string>
+
     <string name="err_check_internet_connection">Check your internet connection</string>
     <string name="err_email_is_empty">"Enter a email "</string>
     <string name="err_email_is_not_valid">Incorrect e-mail</string>
+
     <string name="err_items_is_empty">Add a product</string>
     <string name="err_not_exist_app_to_send">Not exist app to send an invitation</string>
     <string name="err_password_is_empty">Password is empty</string>
+
     <string name="err_price_is_empty">Enter price</string>
     <string name="err_product_title_is_empty">Enter a product name</string>
+
     <string name="err_shop_date_is_blank">Choose a date</string>
     <string name="err_shop_location_is_blank">"Enter a location "</string>
     <string name="err_shop_title_is_blank">Enter a store name</string>
+
     <string name="et_hint_date">"Date of purchase "</string>
     <string name="et_hint_email">E-mail</string>
     <string name="et_hint_location">Location</string>
     <string name="et_hint_password">Password</string>
     <string name="et_hint_product">Article</string>
     <string name="et_hint_shop_title">Store title</string>
+
     <string name="toolbar_title_order_data">Order data</string>
     <string name="toolbar_title_order_list">Shopping list</string>
     <string name="toolbar_title_shop_data">Store data</string>
